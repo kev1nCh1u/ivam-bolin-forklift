@@ -513,7 +513,7 @@ Move_Robot::Move_Robot(char *dev_name, int Baudrate)
 {
     // LoadTitlePath();
     // CarParameterPATH = TitlePath + CarParameterPATH_Local;
-		back_trajectory = false;
+		back_trajectory = true;//後退導航
 		type19_use = false;
 		turn_use_backtra = false;
 		//qrcode
@@ -2715,7 +2715,7 @@ int Move_Robot::SetLocalpar(std::string file_buf)
 				std::string network_card_temp;
 				std::getline(fin, network_card_temp);
         std::getline(fin, network_card_temp);
-				network_card = network_card_temp;
+				network_card = network_card_temp; // kevin local_parameter
     }
 
     fin.close();

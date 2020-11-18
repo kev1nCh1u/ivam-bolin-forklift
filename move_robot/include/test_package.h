@@ -1597,7 +1597,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 				angular_velocity_p_error = angular_velocity_error;
 				angular_velocity_d_error = angular_velocity_error - pre_angular_velocity_error;
 				pre_angular_velocity_error = angular_velocity_error;
-				// if(back_trajectory)
+				// if(back_trajectory) // kevin fuzzy
 				// {
 				//     if(fabs(angular_velocity_error) < 0.1 && fabs(angular_velocity_error) > 0.05)
 				//     {
@@ -4332,6 +4332,20 @@ void test_package::Caculate_W_rw(float stop_angle, Eigen::Vector3f robot_pos, fl
 	float angular_kd = tracking_kd;
 	float compare_angular_error = 1;
 	float compare_stop_angle = 1;
+
+	// if(back_trajectory) // kevin fuzzy
+	// {
+	//     if(fabs(angular_velocity_error) < 0.05)
+	//     {
+	//       angular_velocity_kp = 0.4;
+	//       angular_velocity_kd = 0.1;
+	//     }
+	//     else
+	//     {
+	//         angular_velocity_kp = 2.0;
+	//         angular_velocity_kd = 0.1;
+	//     }
+	// }
 
 	if (special == 0) //一般模式（導航）
 	{
