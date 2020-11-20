@@ -1181,15 +1181,24 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 
 		std::cout << "=======V_target======  " << V_target << std::endl;
 		robot_pos = slam_pose_;
-		// if(!back_trajectory)
-		// {
-		//     robot_pos = slam_pose_;
-		// }
-		// else
-		// {
-		//     robot_pos = slam_pose_;
-		//     robot_pos.x() = slam_pose_.x() - 1.02;
-		// }
+
+		///////////////// kevin back trajectory ///////////////////////
+		if(!back_trajectory)
+		{
+		    robot_pos = slam_pose_;
+		}
+		else
+		{
+		    robot_pos = slam_pose_;
+		    robot_pos.x() = slam_pose_.x() - 1.02;
+		}
+		std::vector<Eigen::Vector3f> back_point;
+		back_point.resize(1);
+		Eigen::Vector3f kevin_point;
+		kevin_point << robot_pos.x(), robot_pos.y, 1.0;
+		back_point[1] = kevin_point;
+		draw(1, 1.0, 0.0, 0.0, back_point);
+		/////////////////////////////////////////////////////////////
 
 		//robot_pos = ukf_pose_;
 
