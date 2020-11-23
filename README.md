@@ -25,4 +25,8 @@
 ## debug
     python src/test/UDP_Send/udp_send.py
 
+## ssh
+    ssh 192.168.72.152
+    scp -r /home/user/ros/bolin_ws/src user@192.168.72.152:/home/user/kevin_bolin_ws/
+
 ## 問題
