@@ -22,4 +22,7 @@
     . devel/setup.bash
     rosrun AnhungControl AnhungControl "192.168.72.224" 9930
 
+## debug
+    python src/test/UDP_Send/udp_send.py
+
 ## 問題
