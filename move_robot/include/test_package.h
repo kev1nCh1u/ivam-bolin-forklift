@@ -1195,7 +1195,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 		std::vector<Eigen::Vector3f> back_point;
 		back_point.resize(1);
 		Eigen::Vector3f kevin_point;
-		kevin_point << robot_pos.x(), robot_pos.y, 1.0;
+		kevin_point << robot_pos.x(), robot_pos.y(), 1.0;
 		back_point[1] = kevin_point;
 		draw(1, 1.0, 0.0, 0.0, back_point);
 		/////////////////////////////////////////////////////////////
