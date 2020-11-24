@@ -30,4 +30,8 @@
     ssh 192.168.72.152
     scp -r /home/user/ros/bolin_ws/src user@192.168.72.152:/home/user/kevin_bolin_ws/
 
+## git
+    git clone ssh://user@192.168.72.152:/home/user/ros/bolin_ws/src.git
+    git remote add laptop ssh://user@192.168.72.152:/home/user/ros/bolin_ws/src.git
+
 ## 問題
