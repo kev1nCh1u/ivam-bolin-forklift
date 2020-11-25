@@ -5,7 +5,9 @@
     sudo chmod 777 /dev/ttyACM0
 
 ## start command
-    cd ros/bolin_ws/
+    cd ros/kevin_bolin_ws/
+
+    catkkin_make
 
     . devel/setup.bash
     roslaunch hector_slam_launch tutorial.launch
@@ -17,10 +19,10 @@
     rosrun move_robot move_robot /dev/ttyACM0 38400
 
     . devel/setup.bash
-    rosrun pepperl_fuchs_r2000 r2000_node "192.168.10.100"
+    rosrun pepperl_fuchs_r2000 r2000_node 192.168.10.100
 
     . devel/setup.bash
-    rosrun AnhungControl AnhungControl "192.168.72.224" 9930
+    rosrun AnhungControl AnhungControl 192.168.72.224 9930
 
 ## debug
     python src/test/UDP_Send/udp_send.py
@@ -28,7 +30,8 @@
 
 ## ssh
     ssh 192.168.72.152
-    scp -r /home/user/ros/bolin_ws/src user@192.168.72.152:/home/user/kevin_bolin_ws/
+    scp -r /home/user/ros/kevin_bolin_ws/src user@192.168.72.152:/home/user/kevin_bolin_ws/
+    scp -r /home/user/ros/kevin_bolin_ws/src user@192.168.72.22:/home/user/ros/kevin_bolin_ws/
 
 ## git
     git clone ssh://user@192.168.72.152:/home/user/ros/bolin_ws/src.git
