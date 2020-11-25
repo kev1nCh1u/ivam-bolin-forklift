@@ -317,6 +317,7 @@ public:
 	// //void timerCallback(const ros::TimerEvent& event);
 
     void draw(int id,float color_r,float color_g,float color_b,std::vector<Eigen::Vector3f>);
+    void kevin_draw(int id,float color_r,float color_g,float color_b,Eigen::Vector3f);
     void drawLine(int id,float color_r,float color_g,float color_b,std::vector<Eigen::Vector3f> drawline);
     int SetLocalpar(std::string file_buf);
 
@@ -2594,6 +2595,49 @@ void Move_Robot::draw(int id,float color_r,float color_g,float color_b,std::vect
             marke_Publisher_.publish(points);
             //畫出軌跡再rviz
 }
+
+void Move_Robot::kevin_draw(int id,float color_r,float color_g,float color_b,Eigen::Vector3f drawpoint)
+{
+    //畫出軌跡再rviz
+            visualization_msgs::Marker points;
+            points.header.frame_id  = "/map";
+            points.header.stamp  = ros::Time::now();
+            points.ns  = "points";
+            points.action  = visualization_msgs::Marker::ADD;
+            points.pose.orientation.w  = 1.0;
+            points.id = id;
+
+
+            points.type = visualization_msgs::Marker::POINTS;
+
+            // POINTS markers use x and y scale for width/height respectively
+            points.scale.x = 0.2;
+            points.scale.y = 0.2;
+
+            // Points are green
+            points.color.g = color_g;
+            points.color.b = color_b;
+            points.color.r = color_r;
+            points.color.a = 1.0;
+
+            // Create the vertices for the points and lines
+
+
+            geometry_msgs::Point p;
+            p.x = drawpoint.x();
+            p.y = drawpoint.y();
+            p.z = 0;
+
+            points.points.push_back(p);
+
+
+            // std::cout<<"sub_missonPath_subPoint_buf.sub_missonPath_subPoint.size()  "<<sub_missonPath_subPoint_buf.sub_missonPath_subPoint.size()<<std::endl;
+            // std::cout<<"points  "<<points.points.size()<<std::endl;
+            //std::cout<<"draw  "<<std::endl;
+            marke_Publisher_.publish(points);
+            //畫出軌跡再rviz
+}
+
 void Move_Robot::drawLine(int id,float color_r,float color_g,float color_b,std::vector<Eigen::Vector3f> drawline)
 {
     //std::cout<<"========drawLine========"<<std::endl;

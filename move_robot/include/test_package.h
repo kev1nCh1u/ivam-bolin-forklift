@@ -179,6 +179,7 @@ void test_package::TriggerCallback_all(const std_msgs::Int8 &msg)
 }
 void test_package::timerCallback(const ros::TimerEvent &event)
 {
+
 	//std::cout<<"Rev_V = "<<Rev_odom_onewheel_v<<" "<<" Rev_W =  "<<Rev_odom_onewheel_th<<std::endl;
 	//std::cout<<"slam_pose_==================="<<slam_pose_<<std::endl;
 	static bool LaserMiss_send = false;
@@ -1190,14 +1191,14 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 		else
 		{
 		    robot_pos = slam_pose_;
-		    robot_pos.x() = slam_pose_.x() - 1.02;
+			// robot_pos.x() = slam_pose_.x() - 1.02;
+			robot_pos.x() = slam_pose_.x() + 1.02 * cos(slam_pose_.z());
+			robot_pos.y() = slam_pose_.y() + 1.02 * sin(slam_pose_.z());
+
 		}
-		std::vector<Eigen::Vector3f> back_point;
-		back_point.resize(1);
 		Eigen::Vector3f kevin_point;
 		kevin_point << robot_pos.x(), robot_pos.y(), 1.0;
-		back_point[1] = kevin_point;
-		draw(1, 1.0, 1.0, 1.0, back_point);
+		kevin_draw(1, 0, 1.0, 1.0, kevin_point);
 		/////////////////////////////////////////////////////////////
 
 		//robot_pos = ukf_pose_;
