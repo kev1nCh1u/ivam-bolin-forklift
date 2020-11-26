@@ -14,15 +14,19 @@
 
     . devel/setup.bash
     rosrun JoyStick joystick /dev/input/js0
+    roslaunch JoyStick joystick.launch
 
     . devel/setup.bash
     rosrun move_robot move_robot /dev/ttyACM0 38400
+    roslaunch move_robot move_robot.launch
 
     . devel/setup.bash
     rosrun pepperl_fuchs_r2000 r2000_node 192.168.10.100
+    roslaunch pepperl_fuchs_r2000 pepperl_fuchs_master.launch
 
     . devel/setup.bash
     rosrun AnhungControl AnhungControl 192.168.72.224 9930
+    roslaunch AnhungControl anhung_control.launch
 
 ## debug
     python src/test/UDP_Send/udp_send.py
