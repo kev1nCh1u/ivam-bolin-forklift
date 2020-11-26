@@ -180,6 +180,24 @@ void test_package::TriggerCallback_all(const std_msgs::Int8 &msg)
 void test_package::timerCallback(const ros::TimerEvent &event)
 {
 
+	///////////////// kevin back trajectory ///////////////////////
+	Eigen::Vector3f kevin_point;
+	if(!back_trajectory)
+	{
+	    kevin_point = slam_pose_;
+	}
+	else
+	{
+	    kevin_point = slam_pose_;
+		// kevin_point.x() = slam_pose_.x() - 1.02;
+		kevin_point.x() = slam_pose_.x() + 1.02 * cos(slam_pose_.z());
+		kevin_point.y() = slam_pose_.y() + 1.02 * sin(slam_pose_.z());
+	}
+	
+	kevin_draw(1, 0, 1.0, 1.0, kevin_point);
+	std::cout << "=======kevin_point======  " << std::endl;
+	/////////////////////////////////////////////////////////////
+
 	//std::cout<<"Rev_V = "<<Rev_odom_onewheel_v<<" "<<" Rev_W =  "<<Rev_odom_onewheel_th<<std::endl;
 	//std::cout<<"slam_pose_==================="<<slam_pose_<<std::endl;
 	static bool LaserMiss_send = false;
@@ -886,6 +904,25 @@ bool test_package::Tracking_Angle_Init(int &subpath_index, bool isReSet)
 
 	if (!isReSet)
 	{
+		///////////////// kevin back trajectory ///////////////////////
+		if(!back_trajectory)
+		{
+		    robot_pos = slam_pose_;
+		}
+		else
+		{
+		    robot_pos = slam_pose_;
+			// robot_pos.x() = slam_pose_.x() - 1.02;
+			robot_pos.x() = slam_pose_.x() + 1.02 * cos(slam_pose_.z());
+			robot_pos.y() = slam_pose_.y() + 1.02 * sin(slam_pose_.z());
+
+		}
+		Eigen::Vector3f kevin_point;
+		kevin_point << robot_pos.x(), robot_pos.y(), 1.0;
+		kevin_draw(1, 0, 1.0, 1.0, kevin_point);
+		std::cout << "=======kevin_point======  " << std::endl;
+		/////////////////////////////////////////////////////////////
+
 		int type = A_misson[ready_path_index].sub_missonPath[subpath_index].end_type;
 		int last_type;
 		if (subpath_index > 0)
@@ -1199,6 +1236,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 		Eigen::Vector3f kevin_point;
 		kevin_point << robot_pos.x(), robot_pos.y(), 1.0;
 		kevin_draw(1, 0, 1.0, 1.0, kevin_point);
+		std::cout << "=======kevin_point======  " << std::endl;
 		/////////////////////////////////////////////////////////////
 
 		//robot_pos = ukf_pose_;

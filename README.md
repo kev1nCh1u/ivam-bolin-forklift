@@ -31,7 +31,8 @@
 
 ## ssh
     ssh 192.168.72.152
-    scp -r /home/user/ros/kevin_bolin_ws/src user@192.168.72.152:/home/user/kevin_bolin_ws/
+    sudo service ssh start
+    scp -r /home/user/ros/kevin_bolin_ws/src user@192.168.72.152:/home/user/ros/kevin_bolin_ws/
     scp -r /home/user/ros/kevin_bolin_ws/src user@192.168.72.22:/home/user/ros/kevin_bolin_ws/
 
 ## git
