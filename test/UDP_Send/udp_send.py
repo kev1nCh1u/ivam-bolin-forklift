@@ -2,8 +2,8 @@
 # py3
 import socket
 
-# UDP_IP = "127.0.0.1"
-UDP_IP = "192.168.72.152"
+UDP_IP = "127.0.0.1"
+# UDP_IP = "192.168.72.152"
 
 UDP_PORT = 9930
 # MESSAGE = b"Hello, World!"

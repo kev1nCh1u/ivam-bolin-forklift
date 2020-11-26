@@ -180,22 +180,14 @@ void test_package::TriggerCallback_all(const std_msgs::Int8 &msg)
 void test_package::timerCallback(const ros::TimerEvent &event)
 {
 
-	///////////////// kevin back trajectory ///////////////////////
+	///////////////// kevin_back_trajectory ///////////////////////
 	Eigen::Vector3f kevin_point;
-	if(!back_trajectory)
-	{
-	    kevin_point = slam_pose_;
-	}
-	else
-	{
-	    kevin_point = slam_pose_;
-		// kevin_point.x() = slam_pose_.x() - 1.02;
-		kevin_point.x() = slam_pose_.x() + 1.02 * cos(slam_pose_.z());
-		kevin_point.y() = slam_pose_.y() + 1.02 * sin(slam_pose_.z());
-	}
+
+	kevin_point = slam_pose_;
+	kevin_point.x() = slam_pose_.x() + 1.02 * cos(slam_pose_.z());
+	kevin_point.y() = slam_pose_.y() + 1.02 * sin(slam_pose_.z());
 	
-	kevin_draw(1, 0, 1.0, 1.0, kevin_point);
-	std::cout << "=======kevin_point======  " << std::endl;
+	kevin_draw(87, 0, 1.0, 1.0, kevin_point);
 	/////////////////////////////////////////////////////////////
 
 	//std::cout<<"Rev_V = "<<Rev_odom_onewheel_v<<" "<<" Rev_W =  "<<Rev_odom_onewheel_th<<std::endl;
@@ -904,7 +896,7 @@ bool test_package::Tracking_Angle_Init(int &subpath_index, bool isReSet)
 
 	if (!isReSet)
 	{
-		///////////////// kevin back trajectory ///////////////////////
+		///////////////// kevin_back_trajectory ///////////////////////
 		if(!back_trajectory)
 		{
 		    robot_pos = slam_pose_;
@@ -915,12 +907,11 @@ bool test_package::Tracking_Angle_Init(int &subpath_index, bool isReSet)
 			// robot_pos.x() = slam_pose_.x() - 1.02;
 			robot_pos.x() = slam_pose_.x() + 1.02 * cos(slam_pose_.z());
 			robot_pos.y() = slam_pose_.y() + 1.02 * sin(slam_pose_.z());
+			std::cout << "=======tran_pos======  " << std::endl;
 
 		}
-		Eigen::Vector3f kevin_point;
-		kevin_point << robot_pos.x(), robot_pos.y(), 1.0;
-		kevin_draw(1, 0, 1.0, 1.0, kevin_point);
-		std::cout << "=======kevin_point======  " << std::endl;
+		kevin_draw(87, 0, 1.0, 1.0, robot_pos);
+		std::cout << "=======kevin_point_Tracking_Angle_Init======  " << std::endl;
 		/////////////////////////////////////////////////////////////
 
 		int type = A_misson[ready_path_index].sub_missonPath[subpath_index].end_type;
@@ -1010,13 +1001,13 @@ bool test_package::Tracking_Angle_Init(int &subpath_index, bool isReSet)
 			float cmd_angular_velocity_buf = 0.0;
 			int now_index = 0;
 			float odom_v = 0.4;
-			if (!back_trajectory) // kevin back trajectory
+			if (!back_trajectory) // kevin_back_trajectory
 			{
 				target_ind = calc_target_index(robot_pos, odom_v, A_misson[ready_path_index].sub_missonPath[subpath_index].sub_missonPath_subPoint, now_index);
 			}
 			else
 			{
-				//     //target_ind = calc_target_index(robot_pos, odom_v, A_misson[ready_path_index].sub_missonPath[subpath_index].sub_missonPath_subPoint, now_index);
+				//target_ind = calc_target_index(robot_pos, odom_v, A_misson[ready_path_index].sub_missonPath[subpath_index].sub_missonPath_subPoint, now_index);
 				target_ind = A_misson[ready_path_index].sub_missonPath[subpath_index].sub_missonPath_subPoint.size() - 1;
 			}
 
@@ -1220,7 +1211,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 		std::cout << "=======V_target======  " << V_target << std::endl;
 		robot_pos = slam_pose_;
 
-		///////////////// kevin back trajectory ///////////////////////
+		///////////////// kevin_back_trajectory ///////////////////////
 		if(!back_trajectory)
 		{
 		    robot_pos = slam_pose_;
@@ -1231,12 +1222,11 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 			// robot_pos.x() = slam_pose_.x() - 1.02;
 			robot_pos.x() = slam_pose_.x() + 1.02 * cos(slam_pose_.z());
 			robot_pos.y() = slam_pose_.y() + 1.02 * sin(slam_pose_.z());
+			std::cout << "=======tran_pos======  " << std::endl;
 
 		}
-		Eigen::Vector3f kevin_point;
-		kevin_point << robot_pos.x(), robot_pos.y(), 1.0;
-		kevin_draw(1, 0, 1.0, 1.0, kevin_point);
-		std::cout << "=======kevin_point======  " << std::endl;
+		kevin_draw(87, 0, 1.0, 1.0, robot_pos);
+		std::cout << "=======kevin_point_Tracking_Trajectory======  " << std::endl;
 		/////////////////////////////////////////////////////////////
 
 		//robot_pos = ukf_pose_;
@@ -1318,7 +1308,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 
 		//////////////////////////
 		//查找目前所應追尋的點
-		if (!back_trajectory) // kevin back trajectory
+		if (!back_trajectory) // kevin_back_trajectory
 		{
 			target_ind = calc_target_index(robot_pos, Rev_odom_v, A_misson[ready_path_index].sub_missonPath[subpath_index].sub_missonPath_subPoint, now_index);
 		}
