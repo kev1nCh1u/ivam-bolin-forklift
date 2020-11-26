@@ -34,6 +34,7 @@
     Mr;1,0,1.68822,0.432922,1.71258,diff,0,0.5,ivam_3F;2,3,2.46556,-4.44588,1.66535,diff,0,0.5,ivam_3F,2;E
 
     rosrun hokuyo_node hokuyo_node
+    rosrun move_robot move_robot /dev/ttyUSB0 115200
 
 ## ssh
     ssh 192.168.72.152

@@ -180,10 +180,11 @@ void test_package::TriggerCallback_all(const std_msgs::Int8 &msg)
 void test_package::timerCallback(const ros::TimerEvent &event)
 {
 
-	///////////////// kevin_back_trajectory ///////////////////////
+	///////////////// kevin_back ///////////////////////
 	Eigen::Vector3f kevin_point;
 
 	kevin_point = slam_pose_;
+	// kevin_point.x() = slam_pose_.x() - 1.02;
 	kevin_point.x() = slam_pose_.x() + 1.02 * cos(slam_pose_.z());
 	kevin_point.y() = slam_pose_.y() + 1.02 * sin(slam_pose_.z());
 	
@@ -896,7 +897,7 @@ bool test_package::Tracking_Angle_Init(int &subpath_index, bool isReSet)
 
 	if (!isReSet)
 	{
-		///////////////// kevin_back_trajectory ///////////////////////
+		///////////////// kevin_back ///////////////////////
 		if(!back_trajectory)
 		{
 		    robot_pos = slam_pose_;
@@ -1001,7 +1002,7 @@ bool test_package::Tracking_Angle_Init(int &subpath_index, bool isReSet)
 			float cmd_angular_velocity_buf = 0.0;
 			int now_index = 0;
 			float odom_v = 0.4;
-			// if (!back_trajectory) // kevin_back_trajectory
+			// if (!back_trajectory) // kevin_back
 			// {
 				target_ind = calc_target_index(robot_pos, odom_v, A_misson[ready_path_index].sub_missonPath[subpath_index].sub_missonPath_subPoint, now_index);
 			// }
@@ -1211,7 +1212,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 		std::cout << "=======V_target======  " << V_target << std::endl;
 		robot_pos = slam_pose_;
 
-		///////////////// kevin_back_trajectory ///////////////////////
+		///////////////// kevin_back ///////////////////////
 		if(!back_trajectory)
 		{
 		    robot_pos = slam_pose_;
@@ -1308,7 +1309,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 
 		//////////////////////////
 		//查找目前所應追尋的點
-		// if (!back_trajectory) // kevin_back_trajectory
+		// if (!back_trajectory) // kevin_back
 		// {
 			target_ind = calc_target_index(robot_pos, Rev_odom_v, A_misson[ready_path_index].sub_missonPath[subpath_index].sub_missonPath_subPoint, now_index);
 		// }
@@ -1658,12 +1659,12 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 				std::cout << "cmd_angular_velocity " << cmd_angular_velocity * 180.0 / M_PI << std::endl;
 
 				//protect
-				if (fabs(cmd_angular_velocity) >= 0.5)
+				if (fabs(cmd_angular_velocity) >= 1.55) // kevin_back 1.55
 				{
 					if (cmd_angular_velocity > 0)
-						cmd_angular_velocity = 0.5;
+						cmd_angular_velocity = 1.55;
 					else
-						cmd_angular_velocity = -1 * 0.5;
+						cmd_angular_velocity = -1 * 1.55;
 				}
 
 				//w過大會減速（意味可能有再轉彎）
@@ -1790,7 +1791,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 
 			////////////////////////////////////////////////////////////////////////////////////////
 			std::cout << "=======Last_tracking========" << std::endl;
-			robot_pos = slam_pose_;
+			// robot_pos = slam_pose_;  // kevin_back
 			if (type == MISSON_traffic || type == MISSON_Virtual_traffic || type == MISSON_ChangeMode)
 			{
 				isCloseNow = false;
@@ -4089,6 +4090,8 @@ void test_package::joystickCallback(const move_robot::joystick &joystick)
 	isReveice_joystick = true;
 	//std::cout<<"isReveice_joystick   " <<isReveice_joystick<<std::endl;
 	//std::cout<< "joystick_theta  "<<joystick_theta *180/M_PI<<std::endl;
+
+	//std::cout<<"joystick_v: " << joystick_v <<" joystick_theta: "  << joystick_theta << std::endl;
 }
 void test_package::joystick_move()
 { //==============change=============
@@ -4111,14 +4114,14 @@ void test_package::joystick_move()
 		float L = LRWheeldis; //meter
 
 		//W_rw
-		float W_rw = (sin(us) / L) * joystick_v;
+		float W_rw = (sin(us) / L) * joystick_v * 3.1; // kevin
 
-		if (fabs(W_rw) > 1.0)
+		if (fabs(W_rw) > 1.55) // kevin
 		{
 			if (W_rw > 0)
-				W_rw = 1.0;
+				W_rw = 1.55;
 			else
-				W_rw = -1.0;
+				W_rw = -1.55;
 		}
 
 		//==============change=============
@@ -4129,6 +4132,10 @@ void test_package::joystick_move()
 		{
 			V_avg = -1 * V_avg;
 		}
+
+		// std::cout<<"joystick_v: " << joystick_v <<" joystick_theta: "  << joystick_theta << std::endl;
+		// std::cout << "V_avg " << V_avg << " W_rw " << W_rw << std::endl;
+		if(V_avg < 0)W_rw*=-1; // kevin_back
 
 		float V = V_avg;
 		// if(V>0 && V<0.001)V=0;
@@ -4153,7 +4160,7 @@ void test_package::joystick_move()
 
 		SendPackage(command);
 
-		ROS_INFO("============diff======test==========");
+		// ROS_INFO("============diff======test==========");
 	}
 	else if (btn_id == PUSE_BUTTON_X)
 	{
