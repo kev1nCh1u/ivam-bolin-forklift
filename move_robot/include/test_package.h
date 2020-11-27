@@ -180,7 +180,7 @@ void test_package::TriggerCallback_all(const std_msgs::Int8 &msg)
 void test_package::timerCallback(const ros::TimerEvent &event)
 {
 
-	///////////////// kevin_back ///////////////////////
+	///////////////// kevin_back 改變中心 ///////////////////////
 	Eigen::Vector3f kevin_point;
 
 	kevin_point = slam_pose_;
@@ -897,7 +897,7 @@ bool test_package::Tracking_Angle_Init(int &subpath_index, bool isReSet)
 
 	if (!isReSet)
 	{
-		///////////////// kevin_back ///////////////////////
+		///////////////// kevin_back Angle_Init 改變中心 ///////////////////////
 		if(!back_trajectory)
 		{
 		    robot_pos = slam_pose_;
@@ -1002,9 +1002,9 @@ bool test_package::Tracking_Angle_Init(int &subpath_index, bool isReSet)
 			float cmd_angular_velocity_buf = 0.0;
 			int now_index = 0;
 			float odom_v = 0.4;
-			// if (!back_trajectory) // kevin_back
+			// if (!back_trajectory) // kevin_back 看最後一點
 			// {
-				target_ind = calc_target_index(robot_pos, odom_v, A_misson[ready_path_index].sub_missonPath[subpath_index].sub_missonPath_subPoint, now_index);
+				target_ind = calc_back_target_index(robot_pos, odom_v, A_misson[ready_path_index].sub_missonPath[subpath_index].sub_missonPath_subPoint, now_index);
 			// }
 			// else
 			// {
@@ -1212,7 +1212,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 		std::cout << "=======V_target======  " << V_target << std::endl;
 		robot_pos = slam_pose_;
 
-		///////////////// kevin_back ///////////////////////
+		///////////////// kevin_back Tracking_Trajectory 改變中心 ///////////////////////
 		if(!back_trajectory)
 		{
 		    robot_pos = slam_pose_;
@@ -1309,7 +1309,8 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 
 		//////////////////////////
 		//查找目前所應追尋的點
-		// if (!back_trajectory) // kevin_back
+		//////////////////////////
+		// if (!back_trajectory) // kevin_back 看最後一點
 		// {
 			target_ind = calc_target_index(robot_pos, Rev_odom_v, A_misson[ready_path_index].sub_missonPath[subpath_index].sub_missonPath_subPoint, now_index);
 		// }
@@ -1604,7 +1605,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 
 		//===前85% 的導航====
 		if (now_index < First_tracking)
-		{ // kevin fuzzy
+		{
 			std::cout << "First_tracking" << std::endl;
 			//Angular velocity PID
 
@@ -1636,7 +1637,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 				angular_velocity_p_error = angular_velocity_error;
 				angular_velocity_d_error = angular_velocity_error - pre_angular_velocity_error;
 				pre_angular_velocity_error = angular_velocity_error;
-				// if(back_trajectory) // kevin fuzzy
+				// if(back_trajectory) // kevin fuzzy 前85
 				// {
 				//     if(fabs(angular_velocity_error) < 0.1 && fabs(angular_velocity_error) > 0.05)
 				//     {
@@ -1658,13 +1659,13 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 
 				std::cout << "cmd_angular_velocity " << cmd_angular_velocity * 180.0 / M_PI << std::endl;
 
-				//protect
-				if (fabs(cmd_angular_velocity) >= 1.55) // kevin_back 1.55
+				//protect // kevin_back 1.55 導航角度度限制
+				if (fabs(cmd_angular_velocity) >= 2.0) 
 				{
 					if (cmd_angular_velocity > 0)
-						cmd_angular_velocity = 1.55;
+						cmd_angular_velocity = 2.0;
 					else
-						cmd_angular_velocity = -1 * 1.55;
+						cmd_angular_velocity = -1 * 2.0;
 				}
 
 				//w過大會減速（意味可能有再轉彎）
@@ -1785,13 +1786,12 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 			// std::cout<<"Vy "<<Vy<<std::endl;
 
 		} //===前85% 的導航====
-		//===要進站====
+		//===要進站==== // kevin fuzzy 後85
 		else
-		{ // kevin fuzzy
-
+		{
 			////////////////////////////////////////////////////////////////////////////////////////
 			std::cout << "=======Last_tracking========" << std::endl;
-			// robot_pos = slam_pose_;  // kevin_back
+			// robot_pos = slam_pose_;  // kevin_back 改變中心
 			if (type == MISSON_traffic || type == MISSON_Virtual_traffic || type == MISSON_ChangeMode)
 			{
 				isCloseNow = false;
@@ -1899,17 +1899,17 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 
 		if (Endangle)
 		{
-			if (last_type == MISSON_back_tracking)
+			if (back_trajectory)
 			{
 				std::cout << "last_type == MISSON_back_tracking" << std::endl;
 				Caculate_W_rw(target_pos.z(), robot_pos, angular_error, pre_angular_error, cmd_angular_velocity, 1);
 				//protect
-				if (fabs(cmd_angular_velocity) >= 0.3)
+				if (fabs(cmd_angular_velocity) >= 0.2) // kevin 到站後修正角度
 				{
 					if (cmd_angular_velocity > 0)
-						cmd_angular_velocity = 0.3;
+						cmd_angular_velocity = 0.2;
 					else
-						cmd_angular_velocity = -1 * 0.3;
+						cmd_angular_velocity = -1 * 0.2;
 				}
 				else if (fabs(cmd_angular_velocity) <= 0.05)
 				{
@@ -1921,7 +1921,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 				W_rw = cmd_angular_velocity;
 				V_rv = 0;
 				std::cout << "MISSON_back_tracking angular_error = " << angular_error << std::endl;
-				if (fabs(angular_error) <= 0.1 || fabs(3.14 - fabs(angular_error)) <= 0.1)
+				if (fabs(angular_error) <= 0.05 || fabs(3.14 - fabs(angular_error)) <= 0.05)
 				{
 					isFInish = true;
 				}
@@ -2001,7 +2001,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 		{
 			// back_final_pose = A_misson[ready_path_index].sub_missonPath[subpath_index].sub_missonPath_subPoint[A_misson[ready_path_index].sub_missonPath[subpath_index].sub_missonPath_subPoint.size() - 1];
 			// float x_error = fabs(back_final_pose.x() - robot_pos.x());
-			if (confirm_last_diff_angle && dis_error <= 0.25 && !Endangle)
+			if (confirm_last_diff_angle && dis_error <= 0.1 && !Endangle) // kevin 停站精度公尺
 			{
 				std::cout << "==============================let endangle true==========================" << std::endl;
 				Endangle = true;
@@ -4114,9 +4114,9 @@ void test_package::joystick_move()
 		float L = LRWheeldis; //meter
 
 		//W_rw
-		float W_rw = (sin(us) / L) * joystick_v * 3.1; // kevin
+		float W_rw = (sin(us) / L) * joystick_v * 3.1; // kevin 搖桿角速度大小
 
-		if (fabs(W_rw) > 1.55) // kevin
+		if (fabs(W_rw) > 1.55) // kevin 搖桿角速度限制
 		{
 			if (W_rw > 0)
 				W_rw = 1.55;
@@ -4135,7 +4135,7 @@ void test_package::joystick_move()
 
 		// std::cout<<"joystick_v: " << joystick_v <<" joystick_theta: "  << joystick_theta << std::endl;
 		// std::cout << "V_avg " << V_avg << " W_rw " << W_rw << std::endl;
-		if(V_avg < 0)W_rw*=-1; // kevin_back
+		if(V_avg < 0)W_rw*=-1; // kevin_back 後退反向
 
 		float V = V_avg;
 		// if(V>0 && V<0.001)V=0;
@@ -4373,12 +4373,12 @@ void test_package::Stop()
 
 void test_package::Caculate_W_rw(float stop_angle, Eigen::Vector3f robot_pos, float &angular_error, float &pre_angular_error, float &cmd_angular_velocity, int special)
 {
-	float angular_kp = tracking_kp; // kevin fuzzy
+	float angular_kp = tracking_kp;
 	float angular_kd = tracking_kd;
 	float compare_angular_error = 1;
 	float compare_stop_angle = 1;
 
-	// if(back_trajectory) // kevin fuzzy
+	// if(back_trajectory) // kevin fuzzy 前85
 	// {
 	//     if(fabs(angular_velocity_error) < 0.05)
 	//     {
