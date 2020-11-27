@@ -1660,7 +1660,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 				std::cout << "cmd_angular_velocity " << cmd_angular_velocity * 180.0 / M_PI << std::endl;
 
 				//protect // kevin_back 1.55 導航角度度限制
-				if (fabs(cmd_angular_velocity) >= 2.0) 
+				if (fabs(cmd_angular_velocity) >= 2.0)
 				{
 					if (cmd_angular_velocity > 0)
 						cmd_angular_velocity = 2.0;
@@ -4114,7 +4114,8 @@ void test_package::joystick_move()
 		float L = LRWheeldis; //meter
 
 		//W_rw
-		float W_rw = (sin(us) / L) * joystick_v * 3.1; // kevin 搖桿角速度大小
+		float W_rw = (sin(us) / L) * joystick_v;
+		// float W_rw = (sin(us) / L) * joystick_v * 3.1; // kevin 搖桿角速度大小
 
 		if (fabs(W_rw) > 1.55) // kevin 搖桿角速度限制
 		{
@@ -4133,9 +4134,15 @@ void test_package::joystick_move()
 			V_avg = -1 * V_avg;
 		}
 
+		if(V_avg > 0)
+			V_avg -= abs(W_rw); // kevin 搖桿自旋
+		else
+			V_avg += abs(W_rw); // kevin 搖桿自旋
+
 		// std::cout<<"joystick_v: " << joystick_v <<" joystick_theta: "  << joystick_theta << std::endl;
 		// std::cout << "V_avg " << V_avg << " W_rw " << W_rw << std::endl;
-		if(V_avg < 0)W_rw*=-1; // kevin_back 後退反向
+		if(V_avg < 0) W_rw*=-1; // kevin_back 後退反向
+		if(abs(V_avg) < 0.015) V_avg = 0; // kevin 太小龜0
 
 		float V = V_avg;
 		// if(V>0 && V<0.001)V=0;

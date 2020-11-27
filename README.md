@@ -5,7 +5,7 @@
     sudo chmod 777 /dev/ttyACM0
 
 ## start command
-    cd ros/kevin_bolin_ws/
+    cd ~/ros/kevin_bolin_ws/
 
     catkkin_make
 
