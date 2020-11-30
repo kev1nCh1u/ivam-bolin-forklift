@@ -1904,12 +1904,12 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 				std::cout << "last_type == MISSON_back_tracking" << std::endl;
 				Caculate_W_rw(target_pos.z(), robot_pos, angular_error, pre_angular_error, cmd_angular_velocity, 1);
 				//protect
-				if (fabs(cmd_angular_velocity) >= 0.2) // kevin 到站後修正角度
+				if (fabs(cmd_angular_velocity) >= 0.1) // kevin 到站後修正角度
 				{
 					if (cmd_angular_velocity > 0)
-						cmd_angular_velocity = 0.2;
+						cmd_angular_velocity = 0.1;
 					else
-						cmd_angular_velocity = -1 * 0.2;
+						cmd_angular_velocity = -1 * 0.1;
 				}
 				else if (fabs(cmd_angular_velocity) <= 0.05)
 				{
@@ -2001,7 +2001,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 		{
 			// back_final_pose = A_misson[ready_path_index].sub_missonPath[subpath_index].sub_missonPath_subPoint[A_misson[ready_path_index].sub_missonPath[subpath_index].sub_missonPath_subPoint.size() - 1];
 			// float x_error = fabs(back_final_pose.x() - robot_pos.x());
-			if (confirm_last_diff_angle && dis_error <= 0.1 && !Endangle) // kevin 停站精度公尺
+			if (confirm_last_diff_angle && dis_error <= 0.16 && !Endangle) // kevin 停站精度公尺
 			{
 				std::cout << "==============================let endangle true==========================" << std::endl;
 				Endangle = true;
@@ -4142,7 +4142,7 @@ void test_package::joystick_move()
 		// std::cout<<"joystick_v: " << joystick_v <<" joystick_theta: "  << joystick_theta << std::endl;
 		// std::cout << "V_avg " << V_avg << " W_rw " << W_rw << std::endl;
 		if(V_avg < 0) W_rw*=-1; // kevin_back 後退反向
-		if(abs(V_avg) < 0.015) V_avg = 0; // kevin 太小龜0
+		// if(abs(V_avg) < 0.015) V_avg = 0; // kevin 太小龜0
 
 		float V = V_avg;
 		// if(V>0 && V<0.001)V=0;

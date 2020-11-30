@@ -6,7 +6,6 @@
 <include file="$(find JoyStick)/launch/joystick_noout.launch"/>
 <include file="$(find move_robot)/launch/move_robot.launch"/>
 <include file="$(find pepperl_fuchs_r2000)/launch/pepperl_fuchs_master_noout.launch"/>
-<include file="$(find hector_slam_launch)/launch/tutorial.launch"/>
 <include file="$(find AnhungControl)/launch/anhung_control_noout.launch"/>
 
 
