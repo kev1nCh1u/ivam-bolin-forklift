@@ -28,6 +28,10 @@
     rosrun AnhungControl AnhungControl 192.168.72.224 9930
     roslaunch AnhungControl anhung_control.launch  //or
 
+## ros launch
+    roslaunch hector_slam_launch tutorial.launch
+    roslaunch bolin_forklift bin_forklift.launch
+
 ## debug
     python src/test/UDP_Send/udp_send.py
     
