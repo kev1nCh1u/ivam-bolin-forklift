@@ -1659,13 +1659,13 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 
 				std::cout << "cmd_angular_velocity " << cmd_angular_velocity * 180.0 / M_PI << std::endl;
 
-				//protect // kevin_back 1.55 導航角度度限制
-				if (fabs(cmd_angular_velocity) >= 2.0)
+				//protect // kevin limit 1.55 導航角度度限制
+				if (fabs(cmd_angular_velocity) >= 1.55)
 				{
 					if (cmd_angular_velocity > 0)
-						cmd_angular_velocity = 2.0;
+						cmd_angular_velocity = 1.55;
 					else
-						cmd_angular_velocity = -1 * 2.0;
+						cmd_angular_velocity = -1 * 1.55;
 				}
 
 				//w過大會減速（意味可能有再轉彎）
@@ -1904,7 +1904,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 				std::cout << "last_type == MISSON_back_tracking" << std::endl;
 				Caculate_W_rw(target_pos.z(), robot_pos, angular_error, pre_angular_error, cmd_angular_velocity, 1);
 				//protect
-				if (fabs(cmd_angular_velocity) >= 0.1) // kevin 到站後修正角度
+				if (fabs(cmd_angular_velocity) >= 0.1) // kevin last 到站後修正角度
 				{
 					if (cmd_angular_velocity > 0)
 						cmd_angular_velocity = 0.1;
@@ -2001,7 +2001,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 		{
 			// back_final_pose = A_misson[ready_path_index].sub_missonPath[subpath_index].sub_missonPath_subPoint[A_misson[ready_path_index].sub_missonPath[subpath_index].sub_missonPath_subPoint.size() - 1];
 			// float x_error = fabs(back_final_pose.x() - robot_pos.x());
-			if (confirm_last_diff_angle && dis_error <= 0.16 && !Endangle) // kevin Precision 停站精度公尺 
+			if (confirm_last_diff_angle && dis_error <= 0.03 && !Endangle) // kevin Precision 停站精度公尺 
 			{
 				std::cout << "==============================let endangle true==========================" << std::endl;
 				Endangle = true;
@@ -2085,7 +2085,16 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 		}
 		else
 		{
-			V_rv -= W_rw; // kevin Precision 精度 
+			// kevin Precision 精度
+			// if(W_rw > 0.2){
+			// 	 V_rv = 0;
+			// 	 W_rw = 0.1;
+			// }
+			// else if(W_rw < -0.2){
+			// 	V_rv = 0;
+			// 	 W_rw = -0.1;
+			// }
+
 			V_rv = -1 * V_rv;
 			W_rw = -1 * W_rw;
 			sendreceive.Package_testWheel_encoder(V_rv, 0, W_rw, 0, command);
@@ -4116,14 +4125,14 @@ void test_package::joystick_move()
 
 		//W_rw
 		float W_rw = (sin(us) / L) * joystick_v;
-		// float W_rw = (sin(us) / L) * joystick_v * 3.1; // kevin 搖桿角速度大小
+		// float W_rw = (sin(us) / L) * joystick_v * 3.1; // kevin joystick 搖桿角速度大小
 
-		if (fabs(W_rw) > 1.55) // kevin 搖桿角速度限制
+		if (fabs(W_rw) > 0.5) // kevin joystick 搖桿角速度限制
 		{
 			if (W_rw > 0)
-				W_rw = 1.55;
+				W_rw = 0.5;
 			else
-				W_rw = -1.55;
+				W_rw = -0.5;
 		}
 
 		//==============change=============
@@ -4136,14 +4145,23 @@ void test_package::joystick_move()
 		}
 
 		if(V_avg > 0)
-			V_avg -= abs(W_rw); // kevin 搖桿自旋
+			V_avg -= fabs(W_rw); // kevin joystick 搖桿自旋
 		else
-			V_avg += abs(W_rw); // kevin 搖桿自旋
+			V_avg += fabs(W_rw); 
+
+		if(W_rw > 0.2 && V_rv == 0){ // kevin joystick 搖桿自旋
+			 W_rw = 0.2;
+		}
+		else if(W_rw < -0.2  && V_rv == 0){
+			 W_rw = -0.2;
+		}
 
 		// std::cout<<"joystick_v: " << joystick_v <<" joystick_theta: "  << joystick_theta << std::endl;
 		// std::cout << "V_avg " << V_avg << " W_rw " << W_rw << std::endl;
-		if(V_avg < 0) W_rw*=-1; // kevin_back 後退反向
-		if(abs(V_avg) < 0.015) V_avg = 0; // kevin 太小龜0
+		if(V_avg < 0) W_rw*=-1; // kevin joystick 後退反向
+		if(fabs(V_avg) < 0.015) V_avg = 0; // kevin joystick 太小龜0
+		V_avg *= -1;
+		W_rw *= -1;
 
 		float V = V_avg;
 		// if(V>0 && V<0.001)V=0;
