@@ -1655,6 +1655,11 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 				//         angular_velocity_kd = 0.1;
 				//     }
 				// }
+				if(back_trajectory) // kevin fuzzy 前85
+				{
+					angular_velocity_kp = 3.0;
+				}
+
 				cmd_angular_velocity = angular_velocity_kp * angular_velocity_p_error + angular_velocity_kd * angular_velocity_d_error; // kevin fuzzy
 
 				std::cout << "cmd_angular_velocity " << cmd_angular_velocity * 180.0 / M_PI << std::endl;
@@ -1786,7 +1791,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 			// std::cout<<"Vy "<<Vy<<std::endl;
 
 		} //===前85% 的導航====
-		//===要進站==== // kevin fuzzy 後85
+		//===要進站====
 		else
 		{
 			////////////////////////////////////////////////////////////////////////////////////////
@@ -4404,19 +4409,23 @@ void test_package::Caculate_W_rw(float stop_angle, Eigen::Vector3f robot_pos, fl
 	float compare_angular_error = 1;
 	float compare_stop_angle = 1;
 
-	// if(back_trajectory) // kevin fuzzy 前85
+	// if(back_trajectory) // kevin fuzzy 後85
 	// {
-	//     if(fabs(angular_velocity_error) < 0.05)
+	//     if(fabs(angular_error) < 0.05)
 	//     {
-	//       angular_velocity_kp = 0.4;
-	//       angular_velocity_kd = 0.1;
+	//       angular_kp = 0.4;
+	//       angular_kd = 0.1;
 	//     }
 	//     else
 	//     {
-	//         angular_velocity_kp = 2.0;
-	//         angular_velocity_kd = 0.1;
+	//         angular_kp = 2.0;
+	//         angular_kd = 0.1;
 	//     }
 	// }
+	if(back_trajectory) // kevin fuzzy 後85
+	{
+		angular_kp = 3.0;
+	}
 
 	if (special == 0) //一般模式（導航）
 	{
