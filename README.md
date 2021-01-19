@@ -4,7 +4,7 @@
 
     sudo chmod 777 /dev/ttyACM0
 
-## start command
+## ros run
     cd ~/ros/kevin_bolin_ws/
 
     catkkin_make
@@ -35,10 +35,15 @@
 ## debug
     python src/test/UDP_Send/udp_send.py
     
-    Mr;1,0,1.68822,0.432922,1.71258,diff,0,0.5,ivam_3F;2,3,2.46556,-4.44588,1.73435,diff,0,0.5,ivam_3F,2;E
+    "Mr;1,0,1.68822,0.432922,1.71258,diff,0,0.5,ivam_3F;2,3,2.46556,-4.44588,1.73435,diff,0,0.5,ivam_3F,2;E"
+    "Mr;1,0,1.73,0.43,1.74,diff,0,0.5,ivam_3F;2,3,2.48,-5.01,1.74,diff,0,0.5,ivam_3F,2;E"
+
+    "Mr;1,0,3.18,-3.50,1.75,diff,0,0.5,ivam_3F;3,13,2.92,-1.39,1.73,diff,0,0.5,ivam_3F;4,13,3.10,-2.179,1.58,diff,0,0.5,ivam_5F;5,3,3.19,-0.88,1.58,diff,0,0.5,ivam_5F,2;E"
 
     rosrun hokuyo_node hokuyo_node
     rosrun move_robot move_robot /dev/ttyUSB0 115200
+
+    rostopic pub -r 5 Send_Pose geometry_msgs/PoseStamped // tab
 
 ## ssh
     ssh 192.168.72.152
