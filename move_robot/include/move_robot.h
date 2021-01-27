@@ -702,6 +702,15 @@ void Move_Robot::floorCallback_(const std_msgs::Int8& msg)
                     //floor = floor_loc;
 				break;
 
+                case 10:
+										std::cout<<"back tracking  "<<floor_loc<<std::endl;
+										back_trajectory = true;
+                break;
+                case 11:
+										std::cout<<"front tracking  "<<floor_loc<<std::endl;
+										back_trajectory = false;
+				break;
+
 				case 100:
 					std::cout<<"finish change"<<std::endl;
                     changemap_finish = true;
