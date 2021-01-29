@@ -66,7 +66,7 @@ set(CMAKE_CXX_FLAGS "-std=c++11")
  add_message_files(
    FILES
    joystick.msg
-Node_recv.msg
+   Node_recv.msg
  )
 
 ## Generate services in the 'srv' folder
