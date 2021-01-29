@@ -135,6 +135,7 @@
 #define limitObs_Mode 3
 #define Normal_Mode 4
 #define Temporary_Mode 5
+#define Stop_Turn 6
 
 #define ReloadCarParameter 0
 #define ReloadLocalParameter 1
@@ -180,6 +181,8 @@ struct NODE_recv{				//Jeff add
 	std::string map;
 	int floor;
 	bool use_backtra;
+	float turn_time;
+	float turn_R;
 
 	Eigen::Vector3f node_pose;
 };
@@ -504,6 +507,8 @@ protected:
 	bool back_trajectory;//後退導航
 	bool type19_use;//type 19用
 	bool turn_use_backtra;
+	float teensy_turn_time;
+	float teensy_turn_R;
 
 
 
@@ -514,9 +519,11 @@ Move_Robot::Move_Robot(char *dev_name, int Baudrate)
 {
     // LoadTitlePath();
     // CarParameterPATH = TitlePath + CarParameterPATH_Local;
-		back_trajectory = true;//後退導航
+		back_trajectory = false; //後退導航
 		type19_use = false;
 		turn_use_backtra = false;
+		teensy_turn_time = 0.0;
+		teensy_turn_R = 0.0;
 		//qrcode
 		isReveice_qrcode = false;
 		teensy_finish = false;
@@ -710,7 +717,7 @@ void Move_Robot::floorCallback_(const std_msgs::Int8& msg)
 										std::cout<<"front tracking  "<<floor_loc<<std::endl;
 										back_trajectory = false;
 				break;
-
+                
 				case 100:
 					std::cout<<"finish change"<<std::endl;
                     changemap_finish = true;
@@ -1152,8 +1159,28 @@ void Move_Robot::IdTypeCallback(const move_robot::Node_recv& command)
     node_buf.radius=command.radius;
 		node_buf.map=command.map;
     node_buf.floor=command.floor;
-		node_buf.use_backtra=command.use_backtra;
+    node_buf.use_backtra=command.use_backtra;
 
+		if(node_buf.type == 15 || node_buf.type == 16 || node_buf.type == 17 || node_buf.type == 18)
+		{
+				int count=0;
+				std::string cut_par;
+				//std::cout<<" buf = "<<command.turn_info<<std::endl;
+				std::stringstream cut(command.turn_info);
+				while(getline(cut,cut_par,'-'))
+				{
+						if(count == 0)node_buf.use_backtra = std::atoi(cut_par.c_str());
+						else if(count == 1)node_buf.turn_time = std::atof(cut_par.c_str());
+						else if(count == 2)node_buf.turn_R = std::atof(cut_par.c_str());
+						count++;
+				}
+		}
+		else
+		{
+				node_buf.use_backtra = false;
+				node_buf.turn_time = 0.0;
+				node_buf.turn_R = 0.0;
+		}
     //  std::cout<<"node_buf.id "<<node_buf.id<<std::endl;
     //             std::cout<<"node_buf.node_pose.x() "<<node_buf.node_pose.x()<<std::endl;
     //              std::cout<<"node_buf.node_pose.y() "<<node_buf.node_pose.y()<<std::endl;
@@ -2129,6 +2156,8 @@ void Move_Robot::Misson_state(bool isReSet)
 
 								std::cout<<"==send_changemap==" <<std::endl;
 						}
+						sendreceive.Package_testWheel_encoder(0, 0, 0, 0, command);
+						SendPackage(command);
 
 					if(changemap_finish)
 					{
@@ -2167,6 +2196,8 @@ void Move_Robot::Misson_state(bool isReSet)
 						if(A_misson[now_A_misson].ALL_pathnode[i].id==id)
 						{
 								turn_use_backtra = A_misson[now_A_misson].ALL_pathnode[i].use_backtra ;
+								teensy_turn_time = A_misson[now_A_misson].ALL_pathnode[i].turn_time;
+								teensy_turn_R = A_misson[now_A_misson].ALL_pathnode[i].turn_R;
 								time_delay_limit = 1;
 								break;
 						}
@@ -2180,6 +2211,8 @@ void Move_Robot::Misson_state(bool isReSet)
 						if(A_misson[now_A_misson].ALL_pathnode[i].id==id)
 						{
 								turn_use_backtra = A_misson[now_A_misson].ALL_pathnode[i].use_backtra ;
+								teensy_turn_time = A_misson[now_A_misson].ALL_pathnode[i].turn_time;
+								teensy_turn_R = A_misson[now_A_misson].ALL_pathnode[i].turn_R;
 								time_delay_limit = 1;
 								break;
 						}
@@ -2193,6 +2226,8 @@ void Move_Robot::Misson_state(bool isReSet)
 						if(A_misson[now_A_misson].ALL_pathnode[i].id==id)
 						{
 								turn_use_backtra = A_misson[now_A_misson].ALL_pathnode[i].use_backtra ;
+								teensy_turn_time = A_misson[now_A_misson].ALL_pathnode[i].turn_time;
+								teensy_turn_R = A_misson[now_A_misson].ALL_pathnode[i].turn_R;
 								time_delay_limit = 1;
 								break;
 						}
@@ -2206,6 +2241,8 @@ void Move_Robot::Misson_state(bool isReSet)
 						if(A_misson[now_A_misson].ALL_pathnode[i].id==id)
 						{
 								turn_use_backtra = A_misson[now_A_misson].ALL_pathnode[i].use_backtra ;
+								teensy_turn_time = A_misson[now_A_misson].ALL_pathnode[i].turn_time;
+								teensy_turn_R = A_misson[now_A_misson].ALL_pathnode[i].turn_R;
 								time_delay_limit = 1;
 								break;
 						}

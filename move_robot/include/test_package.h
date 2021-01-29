@@ -89,6 +89,7 @@ private:
 	float Rev_odom_onewheel_w, Rev_odom_onewheel_v, Rev_odom_onewheel_th, Rev_onewheel_th;
 	float ini_way_theta;
 	int Rev_type;
+	bool qrcode_send;
 };
 test_package::test_package(char *dev_name, int Baudrate) : Move_Robot(dev_name, Baudrate)
 {
@@ -126,6 +127,7 @@ test_package::test_package(char *dev_name, int Baudrate) : Move_Robot(dev_name, 
 	Rev_type = 0;
 
 	ini_way_theta = 0.0;
+	qrcode_send = true;
 
 	std::cout << "v_buf" << v_buf << std::endl;
 	std::cout << "test_package" << std::endl;
@@ -257,6 +259,7 @@ void test_package::timerCallback(const ros::TimerEvent &event)
 void test_package::ClearCallback(const std_msgs::Int8 &msg)
 {
 	int obs_clear_buf = msg.data;
+	std::vector<unsigned char> command;
 	std::vector<SUB_MISSONPATH_SUBPOINT> zzz;
 
 	switch (obs_clear_buf)
@@ -301,6 +304,7 @@ void test_package::ClearCallback(const std_msgs::Int8 &msg)
 
 		protect_erase = true;
 		traffic_send = false;
+		back_trajectory = false;
 
 		break;
 	case Close_AllObs:
@@ -350,6 +354,53 @@ void test_package::ClearCallback(const std_msgs::Int8 &msg)
 		protect_erase = true;
 		traffic_send = false;
 		break;
+
+	case Stop_Turn:
+
+		int xxxxx;
+		p_state_ = P_STATE_IDLE;
+		if (A_misson.size() > 0)
+		{
+			A_misson.clear();
+		}
+
+		memset(&trafficGO_recv, 0, sizeof(trafficGO_recv));
+		now_A_misson = 0;
+		now_path_index = 0;
+		ready_path_index = 0;
+		Tracking_Angle_Init(xxxxx, true);
+		Tracking_Trajectory(xxxxx, true);
+		Trajectory_Tracking(xxxxx, true);
+		Navigation_move(zzz, true);
+		Misson_state(true);
+
+		AvoidObs_state = P_OBS_NORMAL;
+		obs_way_theta = 0.0;
+		isAvoidObs = false;
+		OBS_limilMode = false;
+		all_obs_dis = 0.0;
+		decay_obs_v = 0.0;
+		isFindObs = false;
+		last_subpath_index = 0;
+		isblind = false;
+		avoid_way = 0;
+		obs_avoid_flag = false;
+		ChangToTraffic = false;
+		ChangToTraffic_finishstop = false;
+		isCloseNow = true;
+		command_OBSMode = 0;
+		obs_return = false; //閉障回來
+		avoid_path.clear();
+
+		protect_erase = true;
+		traffic_send = false;
+		std::cout << "Stop Turn" << std::endl;
+		sendreceive.Package_testWheel_encoder(0, 0, 0, 7, command);
+		SendPackage(command);
+		qrcode_send = true;
+		back_trajectory = false;
+		break;
+
 	default:
 		break;
 	}
@@ -361,7 +412,6 @@ void test_package::State_Machine(int &state)
 {
 	int type, id, previous_type;
 	std::vector<unsigned char> command;
-	static bool qrcode_send = true;
 	switch (state)
 	{
 
@@ -394,12 +444,12 @@ void test_package::State_Machine(int &state)
 		{
 
 			previous_type = A_misson[now_A_misson].sub_missonPath[now_path_index - 1].end_type;
-			std::cout << "previous_type = " << previous_type << std::endl;
+			std::cout << "previous_type = " << previous_type << " now_path_index = " << now_path_index << " now_A_misson = " << now_A_misson << std::endl;
 			// previous_type = A_misson[now_A_misson].sub_missonPath[now_path_index-1].end_type;
 
 			if (previous_type == MISSON_back_tracking)
 			{
-				std::cout << "==========test=========" << std::endl;
+				std::cout << "==========test0=========" << std::endl;
 				back_trajectory = true;
 				//type19_use = true;
 			}
@@ -415,7 +465,7 @@ void test_package::State_Machine(int &state)
 				}
 				if (turn_use_backtra)
 				{
-					std::cout << "==========test0=========" << std::endl;
+					std::cout << "==========test1=========" << std::endl;
 					back_trajectory = true;
 				}
 				else
@@ -437,7 +487,7 @@ void test_package::State_Machine(int &state)
 
 			if (previous_type == MISSON_back_tracking)
 			{
-				std::cout << "==========test=========" << std::endl;
+				std::cout << "==========test2=========" << std::endl;
 				back_trajectory = true;
 				//type19_use = true;
 			}
@@ -445,7 +495,7 @@ void test_package::State_Machine(int &state)
 			{
 				if (turn_use_backtra)
 				{
-					std::cout << "==========test0=========" << std::endl;
+					std::cout << "==========test3=========" << std::endl;
 					back_trajectory = true;
 				}
 				else
@@ -558,6 +608,7 @@ void test_package::State_Machine(int &state)
 				ChangToTraffic_finishstop = false;
 				ROS_INFO("All Success!!!\n");
 				now_A_misson = 0;
+				now_path_index = 0;
 				back_trajectory = false;
 				turn_use_backtra = false;
 				//type19_use = false;
@@ -625,8 +676,10 @@ void test_package::State_Machine(int &state)
 		if (qrcode_send)
 		{
 			ROS_INFO("teensy turn left!!!\n");
-			sendreceive.Package_testWheel_encoder(0, 0, 0, 3, command);
+			sendreceive.Package_testWheel_encoder(teensy_turn_time, teensy_turn_R, 0, 3, command);
 			SendPackage(command);
+			teensy_turn_time = 0.0;
+			teensy_turn_R = 0.0;
 			qrcode_send = false;
 		}
 		if (Rev_type == 1)
@@ -643,8 +696,10 @@ void test_package::State_Machine(int &state)
 		if (qrcode_send)
 		{
 			ROS_INFO("teensy turn right!!!\n");
-			sendreceive.Package_testWheel_encoder(0, 0, 0, 4, command);
+			sendreceive.Package_testWheel_encoder(teensy_turn_time, teensy_turn_R, 0, 4, command);
 			SendPackage(command);
+			teensy_turn_time = 0.0;
+			teensy_turn_R = 0.0;
 			qrcode_send = false;
 		}
 		if (Rev_type == 1)
@@ -661,8 +716,10 @@ void test_package::State_Machine(int &state)
 		if (qrcode_send)
 		{
 			ROS_INFO("teensy turn back left!!!\n");
-			sendreceive.Package_testWheel_encoder(0, 0, 0, 5, command);
+			sendreceive.Package_testWheel_encoder(teensy_turn_time, teensy_turn_R, 0, 5, command);
 			SendPackage(command);
+			teensy_turn_time = 0.0;
+			teensy_turn_R = 0.0;
 			qrcode_send = false;
 		}
 		if (Rev_type == 1)
@@ -679,8 +736,10 @@ void test_package::State_Machine(int &state)
 		if (qrcode_send)
 		{
 			ROS_INFO("teensy turn back right!!!\n");
-			sendreceive.Package_testWheel_encoder(0, 0, 0, 6, command);
+			sendreceive.Package_testWheel_encoder(teensy_turn_time, teensy_turn_R, 0, 6, command);
 			SendPackage(command);
+			teensy_turn_time = 0.0;
+			teensy_turn_R = 0.0;
 			qrcode_send = false;
 		}
 		if (Rev_type == 1)
@@ -1282,6 +1341,8 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 		{
 			last_type = A_misson[ready_path_index].sub_missonPath[subpath_index - 1].end_type;
 		}
+		if (type == MISSON_back_tracking && (last_type == MISSON_turn_left || last_type == MISSON_turn_right || last_type == MISSON_turn_back_left || last_type == MISSON_turn_back_right))
+			return true;
 		if (type == MISSON_FreeLoading || type == MISSON_Loading_Time || type == MISSON_unLoading_Time)
 		{
 			int last_checktype = -1;
@@ -1904,7 +1965,7 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 
 		if (Endangle)
 		{
-			if (back_trajectory)
+			if (last_type == MISSON_back_tracking)
 			{
 				std::cout << "last_type == MISSON_back_tracking" << std::endl;
 				Caculate_W_rw(target_pos.z(), robot_pos, angular_error, pre_angular_error, cmd_angular_velocity, 1);
@@ -2090,16 +2151,6 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 		}
 		else
 		{
-			// kevin Precision 精度
-			// if(W_rw > 0.2){
-			// 	 V_rv = 0;
-			// 	 W_rw = 0.1;
-			// }
-			// else if(W_rw < -0.2){
-			// 	V_rv = 0;
-			// 	 W_rw = -0.1;
-			// }
-
 			V_rv = -1 * V_rv;
 			W_rw = -1 * W_rw;
 			sendreceive.Package_testWheel_encoder(V_rv, 0, W_rw, 0, command);
@@ -4105,8 +4156,6 @@ void test_package::joystickCallback(const move_robot::joystick &joystick)
 	isReveice_joystick = true;
 	//std::cout<<"isReveice_joystick   " <<isReveice_joystick<<std::endl;
 	//std::cout<< "joystick_theta  "<<joystick_theta *180/M_PI<<std::endl;
-
-	//std::cout<<"joystick_v: " << joystick_v <<" joystick_theta: "  << joystick_theta << std::endl;
 }
 void test_package::joystick_move()
 { //==============change=============
@@ -4130,14 +4179,13 @@ void test_package::joystick_move()
 
 		//W_rw
 		float W_rw = (sin(us) / L) * joystick_v;
-		// float W_rw = (sin(us) / L) * joystick_v * 3.1; // kevin joystick 搖桿角速度大小
 
-		if (fabs(W_rw) > 0.5) // kevin joystick 搖桿角速度限制
+		if (fabs(W_rw) > 1.0)
 		{
 			if (W_rw > 0)
-				W_rw = 0.5;
+				W_rw = 1.0;
 			else
-				W_rw = -0.5;
+				W_rw = -1.0;
 		}
 
 		//==============change=============
@@ -4148,25 +4196,6 @@ void test_package::joystick_move()
 		{
 			V_avg = -1 * V_avg;
 		}
-
-		if(V_avg > 0)
-			V_avg -= fabs(W_rw); // kevin joystick 搖桿自旋
-		else
-			V_avg += fabs(W_rw); 
-
-		if(W_rw > 0.2 && V_rv == 0){ // kevin joystick 搖桿自旋
-			 W_rw = 0.2;
-		}
-		else if(W_rw < -0.2  && V_rv == 0){
-			 W_rw = -0.2;
-		}
-
-		// std::cout<<"joystick_v: " << joystick_v <<" joystick_theta: "  << joystick_theta << std::endl;
-		// std::cout << "V_avg " << V_avg << " W_rw " << W_rw << std::endl;
-		if(V_avg < 0) W_rw*=-1; // kevin joystick 後退反向
-		if(fabs(V_avg) < 0.015) V_avg = 0; // kevin joystick 太小龜0
-		V_avg *= -1;
-		W_rw *= -1;
 
 		float V = V_avg;
 		// if(V>0 && V<0.001)V=0;
@@ -4191,7 +4220,7 @@ void test_package::joystick_move()
 
 		SendPackage(command);
 
-		// ROS_INFO("============diff======test==========");
+		ROS_INFO("============diff======test==========");
 	}
 	else if (btn_id == PUSE_BUTTON_X)
 	{
@@ -4408,25 +4437,11 @@ void test_package::Caculate_W_rw(float stop_angle, Eigen::Vector3f robot_pos, fl
 	float angular_kd = tracking_kd;
 	float compare_angular_error = 1;
 	float compare_stop_angle = 1;
-
-	// if(back_trajectory) // kevin fuzzy 後85
-	// {
-	//     if(fabs(angular_error) < 0.05)
-	//     {
-	//       angular_kp = 0.4;
-	//       angular_kd = 0.1;
-	//     }
-	//     else
-	//     {
-	//         angular_kp = 2.0;
-	//         angular_kd = 0.1;
-	//     }
-	// }
 	if(back_trajectory) // kevin fuzzy 後85
 	{
 		angular_kp = 3.0;
 	}
-
+	
 	if (special == 0) //一般模式（導航）
 	{
 		angular_error = stop_angle - (robot_pos.z() + Rev_odom_onewheel_th);

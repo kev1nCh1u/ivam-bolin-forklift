@@ -134,7 +134,7 @@ void sendrev::Package_Boling_onewheel(double cmd_v, double cmd_w,std::vector<uns
 void sendrev::Package_allWheel_encoder(double cmd_vx, double cmd_vy, double cmd_w, int type, std::vector<unsigned char> &return_cmd)//測試公版沒有vy就是0
 {
     //std::cout<<"cmd_vx: "<<cmd_vx<<std::endl;
-    std::cout<<"cmd_vx: "<< cmd_vx<<" cmd_w: "<<cmd_w<<" cmd_theta: "<<atan2((cmd_w*1.02),cmd_vx) *180.0 / M_PI <<" type: "<<type<<std::endl;
+    std::cout<<"cmd_vx: "<<cmd_vx<<" cmd_vy: "<<cmd_vy<<" cmd_theta: "<<atan2((cmd_w*1.02),cmd_vx) *180.0 / M_PI <<" cmd_w: "<<cmd_w<<" type: "<<type<<std::endl;
 
     double send_vx = cmd_vx + 100.0;
     double send_vy = cmd_vy + 100.0;
