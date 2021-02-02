@@ -3,6 +3,10 @@
 ## chmod
     sudo chmod 777 /dev/ttyACM0
 
+## ros launch
+    roslaunch hector_slam_launch tutorial.launch
+    roslaunch roslaunch launch_start start.launch
+
 ## ros run
     cd ~/ros/kevin_bolin_ws/
 
@@ -16,11 +20,9 @@
     roslaunch hector_slam_launch tutorial.launch
     rosrun AnhungControl AnhungControl 192.168.72.224 9930
 
-## ros launch
-    roslaunch hector_slam_launch tutorial.launch
-    roslaunch bolin_forklift bin_forklift.launch
-
 ## debug
+    rostopic pub -r 5 Send_Pose geometry_msgs/PoseStamped // tab
+
     python src/test/UDP_Send/udp_send.py
     
     "Mr;1,0,1.73,0.43,1.74,diff,0,0.5,ivam_3F;2,3,2.48,-5.01,1.74,diff,0,0.5,ivam_3F,2;E" #line
@@ -28,11 +30,13 @@
     "Mr;1,0,3.18,-3.50,1.75,diff,0,0.5,ivam_3F;3,13,2.92,-1.39,1.73,diff,0,0.5,ivam_3F;4,13,3.10,-2.179,1.58,diff,0,0.5,ivam_5F;5,3,3.19,-0.88,1.58,diff,0,0.5,ivam_5F,2;E"
 
     "Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,3,4.01,-3.44,1.68,diff,0,0.5,ivam_3F,2;E" #one turn
+
     "Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,1,0.5,ivam_3F;3,1,4.01,-3.44,1.68,diff,0,0.5,ivam_3F;4,3,1.31,-3.73,0.12,diff,0,0.5,ivam_3F,2;E" #two turn
 
-    1.32,-4.54,-1.14      3.77,-0.85,-1.46
+    "Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,1,3.77,-0.85,-1.46,diff,1,0.5,ivam_3F;4,1,4.01,-3.44,1.68,diff,1,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,0.72,-0.358,-1.45,diff,0,0.5,ivam_3F,2;E" #o turn
 
-    rostopic pub -r 5 Send_Pose geometry_msgs/PoseStamped // tab
+    "Mr;1,0,-0.17,-0.44,0.10,diff,0,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,3,3.77,-0.85,-1.46,diff,0,0.5,ivam_3F;4,19,4.01,-3.44,1.68,diff,0,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,0.72,-0.358,-1.45,diff,0,0.5,ivam_3F,2;E" #back_test
+    
 
 ## ssh
     ssh 192.168.72.152
