@@ -10,7 +10,7 @@
 ## ros run
     cd ~/ros/kevin_bolin_ws/
 
-    catkkin_make
+    catkin_make
 
     . devel/setup.bash
 
@@ -36,6 +36,9 @@
     "Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,1,3.77,-0.85,-1.46,diff,1,0.5,ivam_3F;4,1,4.01,-3.44,1.68,diff,1,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,0.72,-0.358,-1.45,diff,0,0.5,ivam_3F,2;E" #o turn
 
     "Mr;1,0,-0.17,-0.44,0.10,diff,0,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,3,3.77,-0.85,-1.46,diff,0,0.5,ivam_3F;4,19,4.01,-3.44,1.68,diff,0,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,0.72,-0.358,-1.45,diff,0,0.5,ivam_3F,2;E" #back_test
+
+    "F;10;E" #倒車
+    "F;11;E" #前進
     
 
 ## ssh
