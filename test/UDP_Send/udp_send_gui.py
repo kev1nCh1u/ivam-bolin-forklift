@@ -6,8 +6,8 @@ import socket
 
 
 def SocketFuc(MESSAGE):
-    UDP_IP = "127.0.0.1"
-    # UDP_IP = "192.168.72.152"
+    # UDP_IP = "127.0.0.1"
+    UDP_IP = "192.168.72.152"
     UDP_PORT = 9930
 
     # MESSAGE = b"Hello, World!"
@@ -26,20 +26,31 @@ def SocketFuc(MESSAGE):
     sock.sendto(MESSAGE, (UDP_IP, UDP_PORT))
     print()
 
+# home to turnplace
+def SendHtoT():
+    SendFront()
+    SocketFuc(b"Mr;1,0,-0.95, -0.30,-3.02,diff,0,0.5,ivam_3F;2,3, 1.49,-0.90,-0.32,diff,0,0.5,ivam_3F,2;E")
 
-def button1Fuc():
-    SocketFuc(b"Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,1,3.77,-0.85,-1.46,diff,1,0.5,ivam_3F;4,1,4.01,-3.44,1.68,diff,1,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,0.72,-0.358,-1.45,diff,0,0.5,ivam_3F,2;E")
+# turnplace to cnc
+def SendTtoC():
+    SendBack()
+    SocketFuc(b"Mr;1,0,1.49,-0.90,-0.32,diff,0,0.5,ivam_3F;2,3, 1.01,-2.98,1.69,diff,0,0.5,ivam_3F,2;E")
 
-def button2Fuc():
-    SocketFuc(b"F;10;E")
+# cnc to turnplace
+def SendCtoT():
+    SendFront()
+    SocketFuc(b"Mr;1,0, 0.92,-1.92,1.66,diff,0,0.5,ivam_3F;2,3, 0.70,0.10,1.68,diff,0,0.5,ivam_3F,2;E")
 
-# back o
-def button3Fuc():
-    SocketFuc(b"Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,1,3.77,-0.85,-1.46,diff,1,0.5,ivam_3F;4,1,4.01,-3.44,1.68,diff,1,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,0.72,-0.358,-1.45,diff,0,0.5,ivam_3F,2;E")
+# turnplace to home
+def SendTtoH():
+    SendBack()
+    SocketFuc(b"Mr;1,0, -1.93,-0.44,-3.06,diff,0,0.5,ivam_3F;2,3, -1.94, -0.39,0.09,diff,0,0.5,ivam_3F,2;E")
 
 # square
 def SendSquPath():
-    SocketFuc(b"Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,1,3.77,-0.85,-1.46,diff,1,0.5,ivam_3F;4,1,4.01,-3.44,1.68,diff,1,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,0.72,-0.358,-1.45,diff,0,0.5,ivam_3F,2;E")
+    SendBack()
+    # SocketFuc(b"Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,1,3.77,-0.85,-1.46,diff,1,0.5,ivam_3F;4,1,4.01,-3.44,1.68,diff,1,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,0.72,-0.358,-1.45,diff,0,0.5,ivam_3F,2;E")
+    SocketFuc(b"Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,1,3.77,-0.85,-1.46,diff,1,0.5,ivam_3F;4,1,4.01,-3.44,1.68,diff,1,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,1.14,--2.10,-1.45,diff,0,0.5,ivam_3F,2;E")
 
 # back
 def SendBack():
@@ -79,28 +90,32 @@ def main():
     layout = QGridLayout()
 
     button1 = QPushButton("button1")
-    button1.clicked.connect(button1Fuc)
-    layout.addWidget(button1, 0, 0)
+    button1.clicked.connect(SendHtoT)
+    layout.addWidget(button1, 1, 0)
 
     button2 = QPushButton("button2")
-    button2.clicked.connect(button2Fuc)
-    layout.addWidget(button2, 0, 1)
+    button2.clicked.connect(SendTtoC)
+    layout.addWidget(button2, 1, 1)
 
     button3 = QPushButton("button3")
-    button3.clicked.connect(button3Fuc)
-    layout.addWidget(button3, 1, 0)
+    button3.clicked.connect(SendCtoT)
+    layout.addWidget(button3, 2, 0)
 
-    button4 = QPushButton("Square")
-    button4.clicked.connect(SendSquPath)
-    layout.addWidget(button4, 1, 1)
+    button4 = QPushButton("button4")
+    button4.clicked.connect(SendTtoH)
+    layout.addWidget(button4, 2, 1)
 
-    button5 = QPushButton("Back")
-    button5.clicked.connect(SendBack)
-    layout.addWidget(button5, 2, 0)
+    squButton = QPushButton("Square")
+    squButton.clicked.connect(SendSquPath)
+    layout.addWidget(squButton, 3, 1)
 
-    button6 = QPushButton("Front")
-    button6.clicked.connect(SendFront)
-    layout.addWidget(button6, 2, 1)
+    backButton = QPushButton("Back")
+    backButton.clicked.connect(SendBack)
+    layout.addWidget(backButton, 0, 0)
+
+    frontBotton = QPushButton("Front")
+    frontBotton.clicked.connect(SendFront)
+    layout.addWidget(frontBotton, 0, 1)
 
     window.setLayout(layout)
     window.show()
