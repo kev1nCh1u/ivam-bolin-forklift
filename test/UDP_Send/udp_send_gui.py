@@ -1,5 +1,7 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QGridLayout
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QKeySequence, QPalette, QColor
+from PyQt5.QtCore import Qt
 import socket
 
 
@@ -40,32 +42,58 @@ def button4Fuc():
 def button5Fuc():
     SocketFuc(b"F;11;E")
 
+def main():
+    app = QApplication([])
 
-app = QApplication([])
-window = QWidget()
-layout = QGridLayout()
+    app.setStyle("Fusion")
 
-button1 = QPushButton("button1")
-button1.clicked.connect(button1Fuc)
-layout.addWidget(button1, 0, 0)
+    # Now use a palette to switch to dark colors:
+    palette = QPalette()
+    palette.setColor(QPalette.Window, QColor(53, 53, 53))
+    palette.setColor(QPalette.WindowText, Qt.white)
+    palette.setColor(QPalette.Base, QColor(25, 25, 25))
+    palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+    palette.setColor(QPalette.ToolTipBase, Qt.white)
+    palette.setColor(QPalette.ToolTipText, Qt.white)
+    palette.setColor(QPalette.Text, Qt.white)
+    palette.setColor(QPalette.Button, QColor(53, 53, 53))
+    palette.setColor(QPalette.ButtonText, Qt.white)
+    palette.setColor(QPalette.BrightText, Qt.red)
+    palette.setColor(QPalette.Link, QColor(42, 130, 218))
+    palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
+    palette.setColor(QPalette.HighlightedText, Qt.black)
+    app.setPalette(palette)
 
-button2 = QPushButton("button2")
-button2.clicked.connect(button2Fuc)
-layout.addWidget(button2, 0, 1)
+    # The rest of the code is the same as for the "normal" text editor.
+    app.setApplicationName("IVAM")
+    text = QPlainTextEdit()
 
-button3 = QPushButton("button3")
-button3.clicked.connect(button3Fuc)
-layout.addWidget(button3, 1, 0)
+    window = QWidget()
+    layout = QGridLayout()
 
-button4 = QPushButton("button4")
-button4.clicked.connect(button4Fuc)
-layout.addWidget(button4, 1, 1)
+    button1 = QPushButton("button1")
+    button1.clicked.connect(button1Fuc)
+    layout.addWidget(button1, 0, 0)
 
-button5 = QPushButton("button5")
-button5.clicked.connect(button5Fuc)
-layout.addWidget(button5, 2, 0)
+    button2 = QPushButton("button2")
+    button2.clicked.connect(button2Fuc)
+    layout.addWidget(button2, 0, 1)
 
-window.setLayout(layout)
-window.show()
+    button3 = QPushButton("button3")
+    button3.clicked.connect(button3Fuc)
+    layout.addWidget(button3, 1, 0)
 
-app.exec()
+    button4 = QPushButton("button4")
+    button4.clicked.connect(button4Fuc)
+    layout.addWidget(button4, 1, 1)
+
+    button5 = QPushButton("button5")
+    button5.clicked.connect(button5Fuc)
+    layout.addWidget(button5, 2, 0)
+
+    window.setLayout(layout)
+    window.show()
+
+    app.exec_()
+
+main()
