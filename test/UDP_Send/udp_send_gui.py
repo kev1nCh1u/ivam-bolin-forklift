@@ -33,13 +33,20 @@ def button1Fuc():
 def button2Fuc():
     SocketFuc(b"F;10;E")
 
+# back o
 def button3Fuc():
-    SocketFuc(b"F;11;E")
+    SocketFuc(b"Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,1,3.77,-0.85,-1.46,diff,1,0.5,ivam_3F;4,1,4.01,-3.44,1.68,diff,1,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,0.72,-0.358,-1.45,diff,0,0.5,ivam_3F,2;E")
 
-def button4Fuc():
-    SocketFuc(b"F;11;E")
+# square
+def SendSquPath():
+    SocketFuc(b"Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,1,3.77,-0.85,-1.46,diff,1,0.5,ivam_3F;4,1,4.01,-3.44,1.68,diff,1,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,0.72,-0.358,-1.45,diff,0,0.5,ivam_3F,2;E")
 
-def button5Fuc():
+# back
+def SendBack():
+    SocketFuc(b"F;10;E")
+
+# front
+def SendFront():
     SocketFuc(b"F;11;E")
 
 def main():
@@ -83,13 +90,17 @@ def main():
     button3.clicked.connect(button3Fuc)
     layout.addWidget(button3, 1, 0)
 
-    button4 = QPushButton("button4")
-    button4.clicked.connect(button4Fuc)
+    button4 = QPushButton("Square")
+    button4.clicked.connect(SendSquPath)
     layout.addWidget(button4, 1, 1)
 
-    button5 = QPushButton("button5")
-    button5.clicked.connect(button5Fuc)
+    button5 = QPushButton("Back")
+    button5.clicked.connect(SendBack)
     layout.addWidget(button5, 2, 0)
+
+    button6 = QPushButton("Front")
+    button6.clicked.connect(SendFront)
+    layout.addWidget(button6, 2, 1)
 
     window.setLayout(layout)
     window.show()
