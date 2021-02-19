@@ -52,6 +52,16 @@ def SendSquPath():
     # SocketFuc(b"Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,1,3.77,-0.85,-1.46,diff,1,0.5,ivam_3F;4,1,4.01,-3.44,1.68,diff,1,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,0.72,-0.358,-1.45,diff,0,0.5,ivam_3F,2;E")
     SocketFuc(b"Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,1,3.77,-0.85,-1.46,diff,1,0.5,ivam_3F;4,1,4.01,-3.44,1.68,diff,1,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,1.14,--2.10,-1.45,diff,0,0.5,ivam_3F,2;E")
 
+# S back
+def SendSBack():
+    SendBack()
+    SocketFuc(b"Mr;1,0,2.11,0.57,1.655,diff,1,0.5,ivam_3F;2,1,3.8,-0.48,1.74,diff,0,0.5,ivam_3F;3,1,2.27,-2.0,1.08,diff,1,0.5,ivam_3F;4,1,1.18,-2.9,1.74,diff,0,0.5,ivam_3F;5,3,2.25556,-4.49588,1.66535,diff,0,0.5,ivam_3F,2;E")
+
+# S front
+def SendSFront():
+    SendFront()
+    SocketFuc(b"Mr;1,0,2.25556,-4.49588,1.66535,diff,1,0.5,ivam_3F;2,1,1.18,-2.9,1.74,diff,0,0.5,ivam_3F;3,1,2.27,-2.0,1.08,diff,1,0.5,ivam_3F;4,1,3.8,-0.48,1.74,diff,0,0.5,ivam_3F;5,3,2.11,0.57,1.655,diff,0,0.5,ivam_3F,2;E")
+
 # back
 def SendBack():
     SocketFuc(b"F;10;E")
@@ -89,26 +99,6 @@ def main():
     window = QWidget()
     layout = QGridLayout()
 
-    button1 = QPushButton("button1")
-    button1.clicked.connect(SendHtoT)
-    layout.addWidget(button1, 1, 0)
-
-    button2 = QPushButton("button2")
-    button2.clicked.connect(SendTtoC)
-    layout.addWidget(button2, 1, 1)
-
-    button3 = QPushButton("button3")
-    button3.clicked.connect(SendCtoT)
-    layout.addWidget(button3, 2, 0)
-
-    button4 = QPushButton("button4")
-    button4.clicked.connect(SendTtoH)
-    layout.addWidget(button4, 2, 1)
-
-    squButton = QPushButton("Square")
-    squButton.clicked.connect(SendSquPath)
-    layout.addWidget(squButton, 3, 1)
-
     backButton = QPushButton("Back")
     backButton.clicked.connect(SendBack)
     layout.addWidget(backButton, 0, 0)
@@ -116,6 +106,34 @@ def main():
     frontBotton = QPushButton("Front")
     frontBotton.clicked.connect(SendFront)
     layout.addWidget(frontBotton, 0, 1)
+
+    squButton = QPushButton("Square Back")
+    squButton.clicked.connect(SendSquPath)
+    layout.addWidget(squButton, 1, 0)
+
+    cnc1 = QPushButton("S Back")
+    cnc1.clicked.connect(SendSBack)
+    layout.addWidget(cnc1, 2, 0)
+
+    cnc1 = QPushButton("S Front")
+    cnc1.clicked.connect(SendSFront)
+    layout.addWidget(cnc1, 2, 1)
+
+    cnc1 = QPushButton("cnc1")
+    cnc1.clicked.connect(SendHtoT)
+    layout.addWidget(cnc1, 3, 0)
+
+    cnc2 = QPushButton("cnc2")
+    cnc2.clicked.connect(SendTtoC)
+    layout.addWidget(cnc2, 3, 1)
+
+    cnc2 = QPushButton("cnc3")
+    cnc2.clicked.connect(SendCtoT)
+    layout.addWidget(cnc2, 4, 0)
+
+    cnc4 = QPushButton("cnc4")
+    cnc4.clicked.connect(SendTtoH)
+    layout.addWidget(cnc4, 4, 1)
 
     window.setLayout(layout)
     window.show()
