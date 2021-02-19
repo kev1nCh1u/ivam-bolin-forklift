@@ -4197,6 +4197,10 @@ void test_package::joystick_move()
 			V_avg = -1 * V_avg;
 		}
 
+		if(fabs(V_avg) < 0.015) V_avg = 0; // kevin joystick 太小龜0
+		V_avg *= -1;
+		W_rw *= -1;
+
 		float V = V_avg;
 		// if(V>0 && V<0.001)V=0;
 		// if(W_rw>0 && W_rw<0.001)W_rw=0;
