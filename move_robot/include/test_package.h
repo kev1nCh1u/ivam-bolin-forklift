@@ -189,6 +189,8 @@ void test_package::timerCallback(const ros::TimerEvent &event)
 	// kevin_point.x() = slam_pose_.x() - 1.02;
 	kevin_point.x() = slam_pose_.x() + 1.02 * cos(slam_pose_.z());
 	kevin_point.y() = slam_pose_.y() + 1.02 * sin(slam_pose_.z());
+
+	slam_pose_ = kevin_point;
 	
 	kevin_draw(87, 0, 1.0, 1.0, kevin_point);
 	/////////////////////////////////////////////////////////////
@@ -957,21 +959,21 @@ bool test_package::Tracking_Angle_Init(int &subpath_index, bool isReSet)
 	if (!isReSet)
 	{
 		///////////////// kevin_back Angle_Init 改變中心 ///////////////////////
-		if(!back_trajectory)
-		{
-		    robot_pos = slam_pose_;
-		}
-		else
-		{
-		    robot_pos = slam_pose_;
-			// robot_pos.x() = slam_pose_.x() - 1.02;
-			robot_pos.x() = slam_pose_.x() + 1.02 * cos(slam_pose_.z());
-			robot_pos.y() = slam_pose_.y() + 1.02 * sin(slam_pose_.z());
-			std::cout << "=======tran_pos======  " << std::endl;
+		// if(!back_trajectory)
+		// {
+		//     robot_pos = slam_pose_;
+		// }
+		// else
+		// {
+		//     robot_pos = slam_pose_;
+		// 	// robot_pos.x() = slam_pose_.x() - 1.02;
+		// 	robot_pos.x() = slam_pose_.x() + 1.02 * cos(slam_pose_.z());
+		// 	robot_pos.y() = slam_pose_.y() + 1.02 * sin(slam_pose_.z());
+		// 	std::cout << "=======tran_pos======  " << std::endl;
 
-		}
-		kevin_draw(87, 0, 1.0, 1.0, robot_pos);
-		std::cout << "=======kevin_point_Tracking_Angle_Init======  " << std::endl;
+		// }
+		// kevin_draw(87, 0, 1.0, 1.0, robot_pos);
+		// std::cout << "=======kevin_point_Tracking_Angle_Init======  " << std::endl;
 		/////////////////////////////////////////////////////////////
 
 		int type = A_misson[ready_path_index].sub_missonPath[subpath_index].end_type;
@@ -1272,21 +1274,21 @@ bool test_package::Tracking_Trajectory(int &subpath_index, bool isReSet)
 		robot_pos = slam_pose_;
 
 		///////////////// kevin_back Tracking_Trajectory 改變中心 ///////////////////////
-		if(!back_trajectory)
-		{
-		    robot_pos = slam_pose_;
-		}
-		else
-		{
-		    robot_pos = slam_pose_;
-			// robot_pos.x() = slam_pose_.x() - 1.02;
-			robot_pos.x() = slam_pose_.x() + 1.02 * cos(slam_pose_.z());
-			robot_pos.y() = slam_pose_.y() + 1.02 * sin(slam_pose_.z());
-			std::cout << "=======tran_pos======  " << std::endl;
+		// if(!back_trajectory)
+		// {
+		//     robot_pos = slam_pose_;
+		// }
+		// else
+		// {
+		//     robot_pos = slam_pose_;
+		// 	// robot_pos.x() = slam_pose_.x() - 1.02;
+		// 	robot_pos.x() = slam_pose_.x() + 1.02 * cos(slam_pose_.z());
+		// 	robot_pos.y() = slam_pose_.y() + 1.02 * sin(slam_pose_.z());
+		// 	std::cout << "=======tran_pos======  " << std::endl;
 
-		}
-		kevin_draw(87, 0, 1.0, 1.0, robot_pos);
-		std::cout << "=======kevin_point_Tracking_Trajectory======  " << std::endl;
+		// }
+		// kevin_draw(87, 0, 1.0, 1.0, robot_pos);
+		// std::cout << "=======kevin_point_Tracking_Trajectory======  " << std::endl;
 		/////////////////////////////////////////////////////////////
 
 		//robot_pos = ukf_pose_;
@@ -4584,3 +4586,5 @@ void test_package::Caculate_W_rw(float stop_angle, Eigen::Vector3f robot_pos, fl
 		cmd_angular_velocity = angular_kp * angular_p_error + angular_kd * angular_d_error;
 	}
 }
+
+void 
