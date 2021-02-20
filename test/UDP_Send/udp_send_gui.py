@@ -28,6 +28,40 @@ def SocketFuc(MESSAGE):
     sock.sendto(MESSAGE, (UDP_IP, UDP_PORT))
     print()
 
+# back
+def SendBack():
+    SocketFuc(b"F;10;E")
+
+# front
+def SendFront():
+    SocketFuc(b"F;11;E")
+
+# square
+def SendSquPath():
+    SendBack()
+    # SocketFuc(b"Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,1,3.77,-0.85,-1.46,diff,1,0.5,ivam_3F;4,1,4.01,-3.44,1.68,diff,1,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,0.72,-0.358,-1.45,diff,0,0.5,ivam_3F,2;E")
+    SocketFuc(b"Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,1,3.77,-0.85,-1.46,diff,1,0.5,ivam_3F;4,1,4.01,-3.44,1.68,diff,1,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,1.14,--2.10,-1.45,diff,0,0.5,ivam_3F,2;E")
+
+# S back
+def SendSBack():
+    SendBack()
+    SocketFuc(b"Mr;1,0,2.11,0.57,1.655,diff,1,0.5,ivam_3F;2,1,3.8,-0.48,1.74,diff,0,0.5,ivam_3F;3,1,2.27,-2.0,1.08,diff,1,0.5,ivam_3F;4,1,1.18,-2.9,1.74,diff,0,0.5,ivam_3F;5,3,2.25556,-4.49588,1.66535,diff,0,0.5,ivam_3F,2;E")
+
+# S front
+def SendSFront():
+    SendFront()
+    SocketFuc(b"Mr;1,0,2.25556,-4.49588,1.66535,diff,1,0.5,ivam_3F;2,1,1.18,-2.9,1.74,diff,0,0.5,ivam_3F;3,1,2.27,-2.0,1.08,diff,1,0.5,ivam_3F;4,1,3.8,-0.48,1.74,diff,0,0.5,ivam_3F;5,3,2.11,0.57,1.655,diff,0,0.5,ivam_3F,2;E")
+
+# home to cnc
+def SendSFront():
+    SendFront()
+    SocketFuc(b"Mr;1,0,-0.95, -0.30,-3.02,diff,0,0.5,ivam_3F;3,19,1.49,-0.90,-0.32,diff,0,0.5,ivam_3F;4,3, 1.01,-2.98,1.69,diff,0,0.5,ivam_3F,2;E")
+
+# cnc to home
+def SendSFront():
+    SendFront()
+    SocketFuc(b"Mr;1,0,0.92,-1.92,1.66,diff,0,0.5,ivam_3F;3,19,0.70,0.10,1.68,diff,0,0.5,ivam_3F;4,3, -1.94, -0.39,0.09,diff,0,0.5,ivam_3F,2;E")
+
 # home to turnplace
 def SendHtoT():
     SendFront()
@@ -47,30 +81,6 @@ def SendCtoT():
 def SendTtoH():
     SendBack()
     SocketFuc(b"Mr;1,0, -1.93,-0.44,-3.06,diff,0,0.5,ivam_3F;2,3, -1.94, -0.39,0.09,diff,0,0.5,ivam_3F,2;E")
-
-# square
-def SendSquPath():
-    SendBack()
-    # SocketFuc(b"Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,1,3.77,-0.85,-1.46,diff,1,0.5,ivam_3F;4,1,4.01,-3.44,1.68,diff,1,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,0.72,-0.358,-1.45,diff,0,0.5,ivam_3F,2;E")
-    SocketFuc(b"Mr;1,0,-0.17,-0.44,0.10,diff,1,0.5,ivam_3F;2,1,3.61,0.35,1.68,diff,0,0.5,ivam_3F;3,1,3.77,-0.85,-1.46,diff,1,0.5,ivam_3F;4,1,4.01,-3.44,1.68,diff,1,0.5,ivam_3F;5,1,1.31,-3.73,0.12,diff,0,0.5,ivam_3F;6,3,1.14,--2.10,-1.45,diff,0,0.5,ivam_3F,2;E")
-
-# S back
-def SendSBack():
-    SendBack()
-    SocketFuc(b"Mr;1,0,2.11,0.57,1.655,diff,1,0.5,ivam_3F;2,1,3.8,-0.48,1.74,diff,0,0.5,ivam_3F;3,1,2.27,-2.0,1.08,diff,1,0.5,ivam_3F;4,1,1.18,-2.9,1.74,diff,0,0.5,ivam_3F;5,3,2.25556,-4.49588,1.66535,diff,0,0.5,ivam_3F,2;E")
-
-# S front
-def SendSFront():
-    SendFront()
-    SocketFuc(b"Mr;1,0,2.25556,-4.49588,1.66535,diff,1,0.5,ivam_3F;2,1,1.18,-2.9,1.74,diff,0,0.5,ivam_3F;3,1,2.27,-2.0,1.08,diff,1,0.5,ivam_3F;4,1,3.8,-0.48,1.74,diff,0,0.5,ivam_3F;5,3,2.11,0.57,1.655,diff,0,0.5,ivam_3F,2;E")
-
-# back
-def SendBack():
-    SocketFuc(b"F;10;E")
-
-# front
-def SendFront():
-    SocketFuc(b"F;11;E")
 
 def main():
     app = QApplication([])
@@ -113,29 +123,37 @@ def main():
     squButton.clicked.connect(SendSquPath)
     layout.addWidget(squButton, 1, 0)
 
-    cnc1 = QPushButton("S Back")
-    cnc1.clicked.connect(SendSBack)
-    layout.addWidget(cnc1, 2, 0)
+    sBack = QPushButton("S Back")
+    sBack.clicked.connect(SendSBack)
+    layout.addWidget(sBack, 2, 0)
 
-    cnc1 = QPushButton("S Front")
-    cnc1.clicked.connect(SendSFront)
-    layout.addWidget(cnc1, 2, 1)
+    sFront = QPushButton("S Front")
+    sFront.clicked.connect(SendSFront)
+    layout.addWidget(sFront, 2, 1)
+    
+    HometoCNC = QPushButton("HometoCNC")
+    HometoCNC.clicked.connect(SendHtoT)
+    layout.addWidget(HometoCNC, 3, 0)
 
-    cnc1 = QPushButton("cnc1")
-    cnc1.clicked.connect(SendHtoT)
-    layout.addWidget(cnc1, 3, 0)
+    CNCtoHome = QPushButton("CNCtoHome")
+    CNCtoHome.clicked.connect(SendHtoT)
+    layout.addWidget(CNCtoHome, 3, 1)
 
-    cnc2 = QPushButton("cnc2")
-    cnc2.clicked.connect(SendTtoC)
-    layout.addWidget(cnc2, 3, 1)
+    HtoT = QPushButton("HtoT")
+    HtoT.clicked.connect(SendHtoT)
+    layout.addWidget(HtoT, 4, 0)
 
-    cnc2 = QPushButton("cnc3")
-    cnc2.clicked.connect(SendCtoT)
-    layout.addWidget(cnc2, 4, 0)
+    TtoC = QPushButton("TtoC")
+    TtoC.clicked.connect(SendTtoC)
+    layout.addWidget(TtoC, 4, 1)
 
-    cnc4 = QPushButton("cnc4")
-    cnc4.clicked.connect(SendTtoH)
-    layout.addWidget(cnc4, 4, 1)
+    CtoT = QPushButton("CtoT")
+    CtoT.clicked.connect(SendCtoT)
+    layout.addWidget(CtoT, 5, 0)
+
+    TtoH = QPushButton("TtoH")
+    TtoH.clicked.connect(SendTtoH)
+    layout.addWidget(TtoH, 5, 1)
 
     window.setLayout(layout)
     window.show()
