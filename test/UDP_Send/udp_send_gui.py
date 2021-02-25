@@ -53,14 +53,14 @@ def SendSFront():
     SocketFuc(b"Mr;1,0,2.25556,-4.49588,1.66535,diff,1,0.5,ivam_3F;2,1,1.18,-2.9,1.74,diff,0,0.5,ivam_3F;3,1,2.27,-2.0,1.08,diff,1,0.5,ivam_3F;4,1,3.8,-0.48,1.74,diff,0,0.5,ivam_3F;5,3,2.11,0.57,1.655,diff,0,0.5,ivam_3F,2;E")
 
 # home to cnc
-def SendSFront():
+def SendHtoC():
     SendFront()
-    SocketFuc(b"Mr;1,0,-0.95, -0.30,-3.02,diff,0,0.5,ivam_3F;3,19,1.49,-0.90,-0.32,diff,0,0.5,ivam_3F;4,3, 1.01,-2.98,1.69,diff,0,0.5,ivam_3F,2;E")
+    SocketFuc(b"Mr;1,0,-0.95, -0.30,-3.02,diff,0,0.5,ivam_3F;3,19,1.49,-0.90,-0.32,diff,0,0.5,ivam_3F;4,1, 2.12,-3.96, -2.11,diff,0,0.5,ivam_3F;5,3, 1.33, -5.12, -2.21,diff,0,0.5,ivam_3F,2;E")
 
 # cnc to home
-def SendSFront():
+def SendCtoH():
     SendFront()
-    SocketFuc(b"Mr;1,0,0.92,-1.92,1.66,diff,0,0.5,ivam_3F;3,19,0.70,0.10,1.68,diff,0,0.5,ivam_3F;4,3, -1.94, -0.39,0.09,diff,0,0.5,ivam_3F,2;E")
+    SocketFuc(b"Mr;1,0,0.92,-1.92,1.66,diff,0,0.5,ivam_3F;3,19,1.57,-0.06,1.09,diff,0,0.5,ivam_3F;4,3, -2.68, -0.32, 0.11,diff,0,0.5,ivam_3F,2;E")
 
 # home to turnplace
 def SendHtoT():
@@ -132,11 +132,11 @@ def main():
     layout.addWidget(sFront, 2, 1)
     
     HometoCNC = QPushButton("HometoCNC")
-    HometoCNC.clicked.connect(SendHtoT)
+    HometoCNC.clicked.connect(SendHtoC)
     layout.addWidget(HometoCNC, 3, 0)
 
     CNCtoHome = QPushButton("CNCtoHome")
-    CNCtoHome.clicked.connect(SendHtoT)
+    CNCtoHome.clicked.connect(SendCtoH)
     layout.addWidget(CNCtoHome, 3, 1)
 
     HtoT = QPushButton("HtoT")
