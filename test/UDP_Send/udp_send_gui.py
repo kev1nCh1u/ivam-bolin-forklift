@@ -55,12 +55,13 @@ def SendSFront():
 # home to cnc
 def SendHtoC():
     SendFront()
-    SocketFuc(b"Mr;1,0,-0.95, -0.30,-3.02,diff,0,0.5,ivam_3F;3,19,1.49,-0.90,-0.32,diff,0,0.5,ivam_3F;4,1, 2.12,-3.96, -2.11,diff,0,0.5,ivam_3F;5,3, 1.33, -5.12, -2.21,diff,0,0.5,ivam_3F,2;E")
+    # SocketFuc(b"Mr;1,0,-0.95, -0.30,-3.02,diff,0,0.5,ivam_3F;3,19,1.49,-0.90,-0.32,diff,0,0.5,ivam_3F;6,3, 1.33, -5.12, 0.99,diff,0,0.5,ivam_3F,2;E")
+    SocketFuc(b"Mr;1,0,  -2.68, -0.32, 0.11,diff,0,0.5,ivam_3F;2,19,1.57,-0.06,1.09,diff,0,0.5,ivam_3F;3,1,0.92,-1.92,1.66,diff,0,0.5,ivam_3F;4,1,2.06, -3.88,1.04,diff,0,0.5,ivam_3F;5,3, 1.29, -5.20, 1.01,diff,0,0.5,ivam_3F,2;E")
 
 # cnc to home
 def SendCtoH():
     SendFront()
-    SocketFuc(b"Mr;1,0,0.92,-1.92,1.66,diff,0,0.5,ivam_3F;3,19,1.57,-0.06,1.09,diff,0,0.5,ivam_3F;4,3, -2.68, -0.32, 0.11,diff,0,0.5,ivam_3F,2;E")
+    SocketFuc(b"Mr;1,0, 1.29, -5.20, 1.01,diff,0,0.5,ivam_3F;2,1,2.06, -3.88,1.04,diff,0,0.5,ivam_3F;3,1,0.92,-1.92,1.66,diff,0,0.5,ivam_3F;4,19,1.57,-0.06,1.09,diff,0,0.5,ivam_3F;5,3, -2.68, -0.32, 0.11,diff,0,0.5,ivam_3F,2;E")
 
 # home to turnplace
 def SendHtoT():
