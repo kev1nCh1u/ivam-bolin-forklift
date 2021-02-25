@@ -187,9 +187,16 @@ void test_package::timerCallback(const ros::TimerEvent &event)
 
 	kevin_point = slam_pose_;
 	// kevin_point.x() = slam_pose_.x() - 1.02;
-	kevin_point.x() = slam_pose_.x() + 1.02 * cos(slam_pose_.z());
-	kevin_point.y() = slam_pose_.y() + 1.02 * sin(slam_pose_.z());
-
+	if(!back_trajectory)
+	{
+		kevin_point.x() = slam_pose_.x() - 1.02 * cos(slam_pose_.z());
+		kevin_point.y() = slam_pose_.y() - 1.02 * sin(slam_pose_.z());
+	}
+	else
+	{
+		kevin_point.x() = slam_pose_.x() + 1.02 * cos(slam_pose_.z());
+		kevin_point.y() = slam_pose_.y() + 1.02 * sin(slam_pose_.z());
+	}
 	slam_pose_ = kevin_point;
 	
 	kevin_draw(87, 0, 1.0, 1.0, kevin_point);
@@ -4228,7 +4235,7 @@ void test_package::joystick_move()
 
 		ROS_INFO("============diff======test==========");
 	}
-	else if (btn_id == PUSE_BUTTON_X)
+	else if (btn_id == PUSE_BUTTON_Y)
 	{
 		ROS_INFO("turn_left");
 		std::vector<unsigned char> command;
@@ -4236,7 +4243,7 @@ void test_package::joystick_move()
 		sendreceive.Package_testWheel_encoder(0, 0, turn_left_w, 0, command);
 		SendPackage(command);
 	}
-	else if (btn_id == PUSE_BUTTON_Y)
+	else if (btn_id == PUSE_BUTTON_X)
 	{
 		ROS_INFO("turn_right");
 		std::vector<unsigned char> command;
@@ -4586,5 +4593,3 @@ void test_package::Caculate_W_rw(float stop_angle, Eigen::Vector3f robot_pos, fl
 		cmd_angular_velocity = angular_kp * angular_p_error + angular_kd * angular_d_error;
 	}
 }
-
-void 
