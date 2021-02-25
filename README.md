@@ -51,4 +51,12 @@
     git clone ssh://user@192.168.72.152:/home/user/ros/bolin_ws/src.git
     git remote add laptop ssh://user@192.168.72.152:/home/user/ros/bolin_ws/src.git
 
+## usb
+    sudo vim /etc/udev/rules.d/usb.rules
+
+    sudo service udev reload
+    sudo service udev restart
+
+    KERNEL=="ttyACM*", MODE:="0777"
+    KERNEL=="ttyUSB*", MODE:="0777"
 ## problem
