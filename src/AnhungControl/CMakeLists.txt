@@ -8,7 +8,7 @@ project(AnhungControl)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  qt_build
+#  qt_build
   roscpp
   rospy
   std_msgs
@@ -156,7 +156,7 @@ ${MYSQL_INCLUDE_DIRS}
 add_definitions(${MYSQL_DEFINITIONS})
 
 
-rosbuild_prepare_qt4(QtCore QtGui)
+# rosbuild_prepare_qt4(QtCore QtGui)
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
@@ -240,7 +240,7 @@ rosbuild_prepare_qt4(QtCore QtGui)
 add_executable(AnhungControl src/AnhungControl.cpp)
 
 target_link_libraries(AnhungControl
-  ${QT_LIBRARIES} 
+#  ${QT_LIBRARIES} 
   ${catkin_LIBRARIES}
 ${MYSQL_LIBRARIES}
 )

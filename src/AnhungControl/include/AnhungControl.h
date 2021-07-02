@@ -25,11 +25,11 @@
 #include <std_msgs/Float32.h>
 
 //qt
-#include <QByteArray>
-#include <QBuffer>
-#include <QImage>
-#include <QPixmap>
-#include <QDebug>
+// #include <QByteArray>
+// #include <QBuffer>
+// #include <QImage>
+// #include <QPixmap>
+// #include <QDebug>
 
 //IP
 #include <sys/types.h>
@@ -179,9 +179,9 @@ public:
 	void ErrorState(int i);
 	void vCallback(const std_msgs::Float32& msg);
 
-	QPixmap Base64_To_Image(QByteArray bytearray);
+	// QPixmap Base64_To_Image(QByteArray bytearray);
 
-	QByteArray Image_To_Base64(QImage &image);
+	// QByteArray Image_To_Base64(QImage &image);
 
 	std::string int2str(int i);
 
