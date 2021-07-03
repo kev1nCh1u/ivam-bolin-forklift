@@ -8,7 +8,10 @@ find_package(catkin REQUIRED COMPONENTS roscpp nav_msgs visualization_msgs tf me
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS thread signals)
-set(Boost_INCLUDE_DIRS /usr/include/boost)
+find_package(Boost COMPONENTS thread signals)
+if(NOT Boost_FOUND)
+  set(Boost_INCLUDE_DIRS /usr/include/boost)
+endif()
 include_directories(${Boost_INCLUDE_DIRS})
 
 # Find SDL library

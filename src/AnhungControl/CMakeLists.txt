@@ -19,6 +19,14 @@ find_package(catkin REQUIRED COMPONENTS
 
 )
 
+find_package(qt_build)
+if(qt_build_FOUND)
+  add_definitions(-DQT_FLAG)
+  rosbuild_prepare_qt4(QtCore QtGui)
+else()
+  
+endif()
+
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake-modules)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
@@ -239,10 +247,14 @@ add_definitions(${MYSQL_DEFINITIONS})
 
 add_executable(AnhungControl src/AnhungControl.cpp)
 
+if(NOT qt_build_FOUND)
+  target_link_libraries(AnhungControl ${QT_LIBRARIES})
+endif()
+
 target_link_libraries(AnhungControl
 #  ${QT_LIBRARIES} 
   ${catkin_LIBRARIES}
-${MYSQL_LIBRARIES}
+  ${MYSQL_LIBRARIES}
 )
 
 
