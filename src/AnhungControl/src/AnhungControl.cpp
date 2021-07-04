@@ -99,11 +99,11 @@ Control::Control(char *address, char *SRV_IP, int port)
 	Mapname = Lc_par.map_name;
 
 #ifdef QT_FLAG
-	// QImage map_image;
-	// map_image = QImage(imagePATH_buf);
+	QImage map_image;
+	map_image = QImage(imagePATH_buf);
 
-	// max_map_width = map_image.width();
-	// max_map_height = map_image.height();
+	max_map_width = map_image.width();
+	max_map_height = map_image.height();
 #endif
 
 #ifndef QT_FLAG
