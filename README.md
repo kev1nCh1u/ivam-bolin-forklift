@@ -1,6 +1,6 @@
 # BOLIN 插車
 
-![Alt text](img/untitled.GIF?raw=true "Title")
+![Alt text](img/untitled.gif?raw=true "Title")
 
 ## chmod
     sudo chmod 777 /dev/ttyACM0
